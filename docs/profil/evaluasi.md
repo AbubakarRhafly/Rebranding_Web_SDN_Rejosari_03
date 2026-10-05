@@ -1,45 +1,59 @@
-# Evaluasi dan kebutuhan data — Hari ke-3
-Tanggal: 5 Oktober 2026  
-Proyek: Rebranding website SDN Rejosari 03  
-Status: Draf untuk pembahasan kelompok, bukan desain yang telah disetujui anggota tim.
+# Evaluasi Awal dan Rancangan Halaman Profil Guru
 
-## Dasar evaluasi
-Evaluasi berdasarkan screenshot website lama yang diberikan pengguna, dengan menu Profil terbuka. Isi halaman Profil Guru dan tampilan HP website lama belum terlihat, sehingga belum dapat dinilai. Foto guru dilaporkan telah dikumpulkan pada hari ke-2, tetapi berkas dan data personelnya belum diberikan untuk pekerjaan ini.
+## Lingkup Pekerjaan
+Pekerjaan berfokus pada rebranding tampilan website SDN Rejosari 03.
+Rancangan dan implementasi dikembangkan secara lokal serta belum
+di-deploy ke website resmi.
 
-## A. Lingkup halaman Profil
-| Temuan / kebutuhan | Usulan | Status |
+Konten website lama digunakan sebagai bahan awal untuk kebutuhan
+perancangan tampilan.
+
+## Dasar Evaluasi
+Evaluasi awal menggunakan screenshot website lama.
+Screenshot memperlihatkan header, navigasi, submenu Profil,
+dan logo berukuran besar pada area konten.
+
+Isi halaman Profil Guru dan tampilan mobile website lama belum
+dievaluasi secara langsung.
+
+## Evaluasi Tampilan
+
+| Bagian | Pengamatan | Usulan Perbaikan |
 | --- | --- | --- |
-| Menu Profil memuat Profil Sekolah, Profil Guru, dan Profil Siswa Ku | Pertahankan pemisahan informasi; bahas penyeragaman istilah Profil Siswa | Usulan navigasi, perlu kesepakatan tim |
-| Logo besar mendominasi area konten pada screenshot | Untuk rancangan Profil Guru, dahulukan judul, pengantar, lalu daftar personel | Usulan halaman; bukan penilaian isi Profil Guru lama |
-| Data dan tata letak guru belum terlihat | Gunakan kartu foto, nama lengkap beserta gelar, dan jabatan | Dibuat dalam wireframe |
-| Tampilan HP belum diamati | Rancang satu kolom di HP dan tiga kolom di desktop | Usulan, belum diuji pada website asli |
+| Header | Terdapat beberapa baris sebelum konten utama | Membuat susunan header lebih ringkas |
+| Area konten | Logo besar mendominasi area yang terlihat | Menyesuaikan ukuran logo dan mengutamakan informasi halaman |
+| Navigasi | Penamaan beberapa menu belum konsisten | Merapikan penamaan dan kapitalisasi menu |
+| Identitas visual | Terdapat beberapa warna pada antarmuka dan logo | Menentukan warna, font, serta jarak yang konsisten |
 
-## B. Komponen bersama yang perlu disepakati kelompok
-| Bagian | Pengamatan | Usulan pembahasan |
-| --- | --- | --- |
-| Header | Beberapa baris berada sebelum konten utama | Ringkas susunan agar konten lebih cepat terlihat; tentukan penempatan kontak dan login |
-| Navigasi | Label KEGIATAN LOMBA_LOMBA menggunakan garis bawah | Sepakati label Kegiatan dan Lomba serta kapitalisasi seluruh menu |
-| Identitas visual | Terlihat warna merah muda, biru gelap, dan ungu pada logo | Sepakati palet, tipografi, jarak, dan komponen kartu; logo resmi tetap digunakan |
-| Footer | Konfirmasi konten dan desain footer bersama |
+## Rancangan Halaman Profil Guru
+- Menampilkan judul “Profil Guru”.
+- Menambahkan pengantar singkat.
+- Menampilkan foto, nama, dan jabatan dalam bentuk kartu.
+- Menggunakan tiga kolom kartu pada desktop.
+- Menggunakan satu kolom kartu pada HP.
+- Menyeragamkan ukuran area foto dan jarak antarkartu.
 
-## Daftar data yang belum tersedia / belum diverifikasi
-Tidak ada nama, jabatan, atau jumlah guru yang direka. Tiga kartu pada wireframe hanya contoh jumlah untuk menunjukkan tata letak.
+## Komponen Bersama
+Header, navigasi, footer, warna, dan font perlu diselaraskan
+dengan halaman yang dikerjakan anggota kelompok lainnya.
 
-| Data | Status saat ini | Tindak lanjut |
-| --- | --- | --- |
-| Daftar lengkap guru dan staf aktif | Belum tersedia | Minta daftar yang dikonfirmasi sekolah |
-| Nama lengkap dan gelar | Belum tersedia | Cocokkan ejaan dengan data resmi |
-| Jabatan / tugas mengajar | Belum tersedia | Konfirmasi per personel |
-| Foto asli setiap personel | Sudah dikumpulkan pengguna; belum diperiksa | Cocokkan foto dengan nama dan periksa ketajaman |
-| Nama file foto dan pasangan personelnya | Belum tersedia | Susun pemetaan foto ke personel |
-| Urutan tampil / pengelompokan | Belum disepakati | Konfirmasi apakah kepala sekolah perlu bagian terpisah |
-| Kelengkapan dan kemutakhiran konten | Belum diverifikasi | Tandai foto atau data lama yang perlu diganti |
+Komponen tersebut pada wireframe masih berupa usulan awal.
 
-## Kriteria rancangan awal
-- Judul halaman: Profil Guru, konsisten dengan menu lama.
-- Pengantar: Mengenal guru dan tenaga kependidikan SDN Rejosari 03.
-- Setiap kartu: foto, nama lengkap dan gelar, jabatan / tugas mengajar.
-- Desktop: tiga kolom; HP: satu kolom.
-- Warna abu-abu sengaja digunakan agar diskusi fokus pada struktur.
-- Header dan footer hanya usulan penempatan, menunggu keputusan tim.
-- Halaman belum diimplementasikan; responsivitas belum diuji melalui browser.
+## Persiapan Konten
+- Menggunakan foto guru dan staf yang telah dikumpulkan dari website lama.
+- Mencocokkan nama dan jabatan dengan informasi pada website lama.
+- Merapikan penamaan file foto agar mudah digunakan dalam kode.
+- Menggunakan placeholder untuk konten yang belum tersedia.
+
+## Status Progres
+- Evaluasi awal telah disusun.
+- Wireframe desktop dan HP telah dibuat.
+- Wireframe masih menggunakan placeholder foto, nama, dan jabatan.
+- Implementasi halaman berdasarkan wireframe belum selesai.
+- Website hasil rebranding belum di-deploy.
+
+## Langkah Berikutnya
+- Meninjau dan memperbaiki rancangan awal.
+- Menyesuaikan komponen bersama dengan anggota kelompok.
+- Mengimplementasikan halaman Profil Guru di lokal.
+- Memeriksa tampilan desktop dan HP melalui browser.
