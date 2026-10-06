@@ -1,0 +1,101 @@
+.profil-guru-page {
+    margin: 0;
+    background: #f5f6f8;
+    color: #202c46;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.profil-guru,
+.profil-guru * {
+    box-sizing: border-box;
+}
+
+.profil-guru {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px 24px;
+}
+
+.profil-guru__intro {
+    margin-bottom: 40px;
+}
+
+.profil-guru__label {
+    margin: 0 0 12px;
+    color: #c00046;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.profil-guru h1 {
+    margin: 0 0 16px;
+    font-size: clamp(30px, 5vw, 44px);
+    line-height: 1.2;
+}
+
+.profil-guru__description {
+    max-width: 640px;
+    margin: 0;
+    color: #526076;
+}
+
+.profil-guru h2 {
+    margin: 0 0 24px;
+    font-size: 24px;
+}
+
+.profil-guru__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.profil-guru__card {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #dce1e8;
+    border-radius: 12px;
+}
+
+.profil-guru__photo-placeholder {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    background: #fce8ef;
+    color: #c00046;
+    font-weight: 700;
+}
+
+.profil-guru__card-content {
+    padding: 20px;
+    overflow-wrap: anywhere;
+}
+
+.profil-guru__card h3 {
+    margin: 0 0 8px;
+    font-size: 19px;
+}
+
+.profil-guru__card p {
+    margin: 0;
+    color: #526076;
+    font-size: 15px;
+}
+
+@media (max-width: 900px) {
+    .profil-guru__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .profil-guru {
+        padding: 32px 16px;
+    }
+
+    .profil-guru__grid {
+        grid-template-columns: 1fr;
+    }
+}
