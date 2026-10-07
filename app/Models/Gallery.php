@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Gallery extends Model
 {
@@ -15,6 +14,10 @@ class Gallery extends Model
         'tanggal',
         'thumbnail',
         'status',
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
     ];
 
     public function foto()

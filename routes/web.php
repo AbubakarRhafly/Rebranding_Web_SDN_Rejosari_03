@@ -11,6 +11,9 @@ use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\KegiatanLombaController;
 use App\Http\Controllers\Admin\GuruController as AdminGuruController;
 use App\Http\Controllers\Admin\SiswaController as AdminSiswaController;
+use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
+use App\Http\Controllers\Admin\PengumumanController as AdminPengumumanController;
+use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 
 
 Route::get('/', function () {
@@ -76,5 +79,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('guru', AdminGuruController::class);
 
     Route::resource('siswa', AdminSiswaController::class);
+
+    Route::resource('berita', AdminBeritaController::class);
+
+    Route::resource('pengumuman', AdminPengumumanController::class);
+
+    Route::resource('gallery', AdminGalleryController::class);
 
 });
