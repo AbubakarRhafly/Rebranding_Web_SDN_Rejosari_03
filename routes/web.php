@@ -10,6 +10,7 @@ use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\KegiatanLombaController;
 use App\Http\Controllers\Admin\GuruController as AdminGuruController;
+use App\Http\Controllers\Admin\SiswaController as AdminSiswaController;
 
 
 Route::get('/', function () {
@@ -70,9 +71,10 @@ Route::get('/kegiatan-lomba', [KegiatanLombaController::class, 'index'])
     ->name('kegiatan-lomba.index');
 
 
-// Admin - Guru
 Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('guru', AdminGuruController::class);
+
+    Route::resource('siswa', AdminSiswaController::class);
 
 });
