@@ -96,7 +96,7 @@
     line-height: 1.25;
 }
 
-.profil-guru__section-heading > p:last-child {
+.profil-guru__section-heading>p:last-child {
     margin: 14px 0 0;
     color: #526076;
 }
@@ -186,5 +186,81 @@
         max-width: 360px;
         margin: 0 auto;
         gap: 24px;
+    }
+}
+
+@media (max-width: 600px) {
+    .profil-guru {
+        padding: 16px 0 32px;
+    }
+
+    .profil-guru__intro {
+        padding: 28px 18px;
+    }
+
+    .profil-guru h1 {
+        font-size: 30px;
+    }
+
+    .profil-guru__description {
+        font-size: 14px;
+    }
+
+    .profil-guru__label {
+        font-size: 10px;
+        letter-spacing: 1.2px;
+    }
+
+    .profil-guru__section {
+        margin-top: 32px;
+    }
+
+    .profil-guru__section-heading {
+        margin-bottom: 24px;
+    }
+
+    .profil-guru__grid {
+        grid-template-columns: 1fr;
+        max-width: none;
+        gap: 14px;
+    }
+
+    .profil-guru__card {
+        display: grid;
+        grid-template-columns: 104px minmax(0, 1fr);
+        align-items: center;
+        border-radius: 14px;
+    }
+
+    .profil-guru__photo {
+        width: 104px;
+        height: 140px;
+        aspect-ratio: auto;
+        object-fit: cover;
+        object-position: center top;
+        border-bottom: 0;
+        border-right: 3px solid var(--warna-kuning);
+    }
+
+    .profil-guru__card-content {
+        min-width: 0;
+        padding: 14px;
+        text-align: left;
+    }
+
+    .profil-guru__role {
+        margin-bottom: 6px;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .profil-guru__card h3 {
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    .profil-guru__school {
+        margin-top: 8px;
+        font-size: 11px;
     }
 }
