@@ -32,6 +32,53 @@
 @endpush
 
 @section('content')
+@php
+// Mengelompokkan tampilan berdasarkan jabatan yang sudah tersedia.
+// Urutan dari controller tetap dipertahankan dalam setiap kelompok.
+$kelompokGuru = $guru->groupBy(function ($item) {
+$jabatan = strtolower(trim((string) $item->jabatan));
+$jabatan = preg_replace('/\s+/', ' ', $jabatan);
+
+if (str_contains($jabatan, 'kepala sekolah')) {
+return 'kepala-sekolah';
+}
+
+if (preg_match('/^guru\b/', $jabatan)) {
+return 'guru';
+}
+
+if (preg_match('/^(staf|staff|tenaga|petugas|operator|penjaga)\b/', $jabatan)) {
+return 'staf';
+}
+
+// Data dengan jabatan lain tetap ditampilkan.
+return 'lainnya';
+});
+
+$kategori = [
+'kepala-sekolah' => [
+'judul' => 'Kepala Sekolah',
+'label' => 'PIMPINAN SEKOLAH',
+'deskripsi' => 'Mengenal kepala sekolah SDN Rejosari 03.',
+],
+'guru' => [
+'judul' => 'Guru',
+'label' => 'TENAGA PENDIDIK',
+'deskripsi' => 'Para pendidik yang mendampingi siswa dalam belajar dan berkembang.',
+],
+'staf' => [
+'judul' => 'Staf',
+'label' => 'TENAGA KEPENDIDIKAN',
+'deskripsi' => 'Mendukung pelayanan dan kegiatan sehari-hari di sekolah.',
+],
+'lainnya' => [
+'judul' => 'Personel Lainnya',
+'label' => 'WARGA SEKOLAH',
+'deskripsi' => 'Personel lainnya di SDN Rejosari 03.',
+],
+];
+@endphp
+
 <main class="profil-guru">
     <header class="profil-guru__intro">
         <p class="profil-guru__label">SDN REJOSARI 03</p>
@@ -44,78 +91,98 @@
         </p>
 
         <a class="profil-guru__button" href="#daftar-guru">
-            Lihat Daftar Guru
+            Lihat Guru dan Staf
             <span aria-hidden="true">↓</span>
         </a>
     </header>
 
-    <section
-        class="profil-guru__section"
-        id="daftar-guru"
-        aria-labelledby="judul-daftar-guru">
-        <div class="profil-guru__section-heading">
-            <p class="profil-guru__label">
-                PENDIDIK DAN TENAGA KEPENDIDIKAN
-            </p>
-
-            <h2 id="judul-daftar-guru">Guru dan Staf Sekolah</h2>
-
-            <p>
-                Bersama mendampingi siswa dalam belajar dan berkembang.
-            </p>
-        </div>
-
+    <div id="daftar-guru" class="profil-guru__directory">
         @if ($guru->isEmpty())
-        <div class="profil-guru__empty">
+        <div class="profil-guru__empty profil-guru__section">
             <p>Data guru dan staf belum tersedia.</p>
         </div>
         @else
-        <div class="profil-guru__grid">
-            @foreach ($guru as $item)
-            @php
-            $fotoPath = ltrim((string) $item->foto, '/');
-            $fotoUrl = null;
-
-            // Foto bawaan proyek berada di public/images/guru.
-            if (
-            str_starts_with($fotoPath, 'images/guru/')
-            && !str_contains($fotoPath, '..')
-            && is_file(public_path($fotoPath))
-            ) {
-            $fotoUrl = asset($fotoPath);
-            }
-            @endphp
-
-            <article class="profil-guru__card">
-                @if ($fotoUrl)
-                <img
-                    class="profil-guru__photo"
-                    src="{{ $fotoUrl }}"
-                    alt="Foto {{ $item->nama }}"
-                    width="600"
-                    height="750"
-                    loading="lazy">
-                @else
-                <div class="profil-guru__photo profil-guru__placeholder">
-                    <span>Foto belum tersedia</span>
-                </div>
-                @endif
-
-                <div class="profil-guru__card-content">
-                    <p class="profil-guru__role">
-                        {{ $item->jabatan }}
-                    </p>
-
-                    <h3>{{ $item->nama }}</h3>
-
-                    <p class="profil-guru__school">
-                        SDN Rejosari 03
-                    </p>
-                </div>
-            </article>
+        <div
+            class="profil-guru__shortcuts"
+            role="group"
+            aria-label="Pilih kelompok guru dan staf">
+            @foreach ($kategori as $kode => $info)
+            @if ($kelompokGuru->has($kode))
+            <a href="#kelompok-{{ $kode }}">
+                {{ $info['judul'] }}
+                <span>{{ $kelompokGuru->get($kode)->count() }}</span>
+            </a>
+            @endif
             @endforeach
         </div>
+
+        @foreach ($kategori as $kode => $info)
+        @if ($kelompokGuru->has($kode))
+        <section
+            class="profil-guru__section"
+            id="kelompok-{{ $kode }}"
+            aria-labelledby="judul-{{ $kode }}">
+
+            <div class="profil-guru__section-heading">
+                <p class="profil-guru__label">
+                    {{ $info['label'] }}
+                </p>
+
+                <h2 id="judul-{{ $kode }}">
+                    {{ $info['judul'] }}
+                </h2>
+
+                <p>{{ $info['deskripsi'] }}</p>
+            </div>
+
+            <div class="profil-guru__grid {{ $kode === 'kepala-sekolah' ? 'profil-guru__grid--kepala' : '' }}">
+                @foreach ($kelompokGuru->get($kode) as $item)
+                @php
+                $fotoPath = ltrim((string) $item->foto, '/');
+                $fotoUrl = null;
+
+                if (
+                str_starts_with($fotoPath, 'images/guru/')
+                && !str_contains($fotoPath, '..')
+                && is_file(public_path($fotoPath))
+                ) {
+                $fotoUrl = asset($fotoPath);
+                }
+                @endphp
+
+                <article class="profil-guru__card">
+                    @if ($fotoUrl)
+                    <img
+                        class="profil-guru__photo"
+                        src="{{ $fotoUrl }}"
+                        alt="Foto {{ $item->nama }}"
+                        width="600"
+                        height="750"
+                        loading="lazy">
+                    @else
+                    <div class="profil-guru__photo profil-guru__placeholder">
+                        <span>Foto belum tersedia</span>
+                    </div>
+                    @endif
+
+                    <div class="profil-guru__card-content">
+                        <p class="profil-guru__role">
+                            {{ $item->jabatan }}
+                        </p>
+
+                        <h3>{{ $item->nama }}</h3>
+
+                        <p class="profil-guru__school">
+                            SDN Rejosari 03
+                        </p>
+                    </div>
+                </article>
+                @endforeach
+            </div>
+        </section>
         @endif
-    </section>
+        @endforeach
+        @endif
+    </div>
 </main>
 @endsection

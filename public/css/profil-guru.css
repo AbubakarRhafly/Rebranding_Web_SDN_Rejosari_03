@@ -264,3 +264,73 @@
         font-size: 11px;
     }
 }
+
+/* Pengelompokan kepala sekolah, guru, dan staf */
+.profil-guru__directory {
+    scroll-margin-top: 24px;
+}
+
+.profil-guru__shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.profil-guru__shortcuts a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid #f0c7cb;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #202c46;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.profil-guru__shortcuts a:hover {
+    background: #fff2f2;
+    border-color: var(--warna-utama);
+}
+
+.profil-guru__shortcuts a:focus-visible {
+    outline: 3px solid #202c46;
+    outline-offset: 4px;
+}
+
+.profil-guru__shortcuts a span {
+    display: inline-grid;
+    place-items: center;
+    min-width: 26px;
+    min-height: 26px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: #fff2f2;
+    color: var(--warna-utama);
+    font-size: 12px;
+}
+
+@media (min-width: 601px) {
+    .profil-guru__grid--kepala {
+        grid-template-columns: minmax(0, 320px);
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .profil-guru__shortcuts {
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .profil-guru__shortcuts a {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
