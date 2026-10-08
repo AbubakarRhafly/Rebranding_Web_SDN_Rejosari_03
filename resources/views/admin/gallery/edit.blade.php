@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Siswa')
+@section('title', 'Edit Gallery')
 
 @section('content')
 
-<h1>Edit Siswa</h1>
+<h1>Edit Gallery</h1>
 
 @if ($errors->any())
     <div class="card">
+
         <strong>Terjadi kesalahan:</strong>
 
         <ul>
@@ -15,48 +16,54 @@
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
+
     </div>
 @endif
 
 <div class="card">
 
     <form
-        action="{{ route('admin.siswa.update', $siswa->id) }}"
+        action="{{ route('admin.gallery.update', $gallery->id) }}"
         method="POST"
     >
+
         @csrf
         @method('PUT')
 
         <p>
-            <label>Nama</label><br>
+            <label>Judul Gallery</label><br>
 
             <input
                 type="text"
-                name="nama"
-                value="{{ old('nama', $siswa->nama) }}"
+                name="judul"
+                value="{{ old('judul', $gallery->judul) }}"
                 required
             >
         </p>
 
         <p>
-            <label>Kelas</label><br>
+            <label>Tanggal</label><br>
 
             <input
-                type="text"
-                name="kelas"
-                value="{{ old('kelas', $siswa->kelas) }}"
-                required
+                type="date"
+                name="tanggal"
+                value="{{ old(
+                    'tanggal',
+                    $gallery->tanggal
+                        ? $gallery->tanggal->format('Y-m-d')
+                        : ''
+                ) }}"
             >
         </p>
 
         <p>
-            <label>Foto</label><br>
+            <label>Thumbnail</label><br>
 
             <input
                 type="text"
-                name="foto"
-                value="{{ old('foto', $siswa->foto) }}"
-                placeholder="Path foto (sementara)"
+                name="thumbnail"
+                value="{{ old('thumbnail', $gallery->thumbnail) }}"
+                placeholder="Path thumbnail (sementara)"
             >
         </p>
 
@@ -65,8 +72,8 @@
 
             <textarea
                 name="deskripsi"
-                rows="5"
-            >{{ old('deskripsi', $siswa->deskripsi) }}</textarea>
+                rows="6"
+            >{{ old('deskripsi', $gallery->deskripsi) }}</textarea>
         </p>
 
         <p>
@@ -76,14 +83,14 @@
 
                 <option
                     value="aktif"
-                    {{ old('status', $siswa->status) == 'aktif' ? 'selected' : '' }}
+                    {{ old('status', $gallery->status) == 'aktif' ? 'selected' : '' }}
                 >
                     Aktif
                 </option>
 
                 <option
                     value="nonaktif"
-                    {{ old('status', $siswa->status) == 'nonaktif' ? 'selected' : '' }}
+                    {{ old('status', $gallery->status) == 'nonaktif' ? 'selected' : '' }}
                 >
                     Nonaktif
                 </option>
@@ -95,7 +102,7 @@
             Simpan Perubahan
         </button>
 
-        <a href="{{ route('admin.siswa.index') }}">
+        <a href="{{ route('admin.gallery.index') }}">
             Batal
         </a>
 
