@@ -7,26 +7,41 @@
 <h1>Tambah Pengumuman</h1>
 
 @if ($errors->any())
+
     <div class="card">
 
         <strong>Terjadi kesalahan:</strong>
 
         <ul>
+
             @foreach ($errors->all() as $error)
+
                 <li>{{ $error }}</li>
+
             @endforeach
+
         </ul>
 
     </div>
+
 @endif
+
 
 <div class="card">
 
-    <form action="{{ route('admin.pengumuman.store') }}" method="POST">
+    <form
+        action="{{ route('admin.pengumuman.store') }}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
 
         @csrf
 
+
+        <!-- JUDUL -->
+
         <p>
+
             <label>Judul</label><br>
 
             <input
@@ -35,9 +50,38 @@
                 value="{{ old('judul') }}"
                 required
             >
+
         </p>
 
+
+        <!-- FOTO -->
+
         <p>
+
+            <label>
+                <strong>Foto Pengumuman</strong>
+            </label>
+
+            <br>
+
+            <input
+                type="file"
+                name="foto"
+                accept="image/*"
+            >
+
+        </p>
+
+        <small>
+            Format gambar: JPG, JPEG, PNG, atau WEBP.
+            Maksimal ukuran file: 5 MB.
+        </small>
+
+
+        <!-- TANGGAL MULAI -->
+
+        <p>
+
             <label>Tanggal Mulai</label><br>
 
             <input
@@ -45,9 +89,14 @@
                 name="tanggal_mulai"
                 value="{{ old('tanggal_mulai') }}"
             >
+
         </p>
 
+
+        <!-- TANGGAL SELESAI -->
+
         <p>
+
             <label>Tanggal Selesai</label><br>
 
             <input
@@ -55,20 +104,36 @@
                 name="tanggal_selesai"
                 value="{{ old('tanggal_selesai') }}"
             >
+
         </p>
 
+
+        <!-- LAMPIRAN -->
+
         <p>
-            <label>Lampiran</label><br>
+
+            <label>
+                <strong>Lampiran</strong>
+            </label>
+
+            <br>
 
             <input
-                type="text"
+                type="file"
                 name="lampiran"
-                value="{{ old('lampiran') }}"
-                placeholder="Path lampiran (sementara)"
             >
+
         </p>
 
+        <small>
+            Maksimal ukuran file: 5 MB.
+        </small>
+
+
+        <!-- STATUS -->
+
         <p>
+
             <label>Status</label><br>
 
             <select name="status" required>
@@ -88,9 +153,14 @@
                 </option>
 
             </select>
+
         </p>
 
+
+        <!-- ISI -->
+
         <p>
+
             <label>Isi Pengumuman</label><br>
 
             <textarea
@@ -98,11 +168,14 @@
                 rows="10"
                 required
             >{{ old('isi') }}</textarea>
+
         </p>
+
 
         <button type="submit">
             Simpan
         </button>
+
 
         <a href="{{ route('admin.pengumuman.index') }}">
             Batal
