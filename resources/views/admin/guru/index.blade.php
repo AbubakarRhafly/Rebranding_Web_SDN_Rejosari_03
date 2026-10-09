@@ -26,6 +26,18 @@
 
             <h2>{{ $item->nama }}</h2>
 
+            @if ($item->foto)
+                <p>
+                    <img
+                        src="{{ asset('storage/' . $item->foto) }}"
+                        alt="{{ $item->nama }}"
+                        width="150"
+                    >
+                </p>
+            @else
+                <p>Belum ada foto.</p>
+            @endif
+
             <p>
                 <strong>Jabatan:</strong>
                 {{ $item->jabatan }}

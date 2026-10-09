@@ -8,7 +8,7 @@
 
 <div class="card">
 
-    <h2>Selamat datang</h2>
+    <h2>Selamat Datang</h2>
 
     <p>
         Anda login sebagai:
@@ -16,59 +16,75 @@
     </p>
 
     <p>
-        Silakan pilih menu untuk mengelola website.
+        Gunakan dashboard ini untuk mengelola konten website
+        SDN Rejosari 03 Semarang.
     </p>
 
 </div>
 
+<h2>Statistik Website</h2>
+
 <div class="card">
+    <h3>Guru</h3>
+    <p>{{ $jumlahGuru }}</p>
 
-    <h2>Menu Pengelolaan</h2>
+    <a href="{{ route('admin.guru.index') }}">
+        Kelola Guru
+    </a>
+</div>
 
-    <ul>
-        <li>
-            <a href="{{ route('admin.guru.index') }}">
-                Kelola Guru
-            </a>
-        </li>
+<div class="card">
+    <h3>Siswa</h3>
+    <p>{{ $jumlahSiswa }}</p>
 
-        <li>
-            <a href="{{ route('admin.siswa.index') }}">
-                Kelola Siswa
-            </a>
-        </li>
+    <a href="{{ route('admin.siswa.index') }}">
+        Kelola Siswa
+    </a>
+</div>
 
-        <li>
-            <a href="{{ route('admin.berita.index') }}">
-                Kelola Berita
-            </a>
-        </li>
+<div class="card">
+    <h3>Berita</h3>
+    <p>{{ $jumlahBerita }}</p>
 
-        <li>
-            <a href="{{ route('admin.pengumuman.index') }}">
-                Kelola Pengumuman
-            </a>
-        </li>
+    <a href="{{ route('admin.berita.index') }}">
+        Kelola Berita
+    </a>
+</div>
 
-        <li>
-            <a href="{{ route('admin.gallery.index') }}">
-                Kelola Gallery
-            </a>
-        </li>
+<div class="card">
+    <h3>Pengumuman</h3>
+    <p>{{ $jumlahPengumuman }}</p>
 
-        <li>
-            <a href="{{ route('admin.kegiatan-lomba.index') }}">
-                Kelola Kegiatan Lomba
-            </a>
-        </li>
+    <a href="{{ route('admin.pengumuman.index') }}">
+        Kelola Pengumuman
+    </a>
+</div>
 
-        <li>
-            <a href="{{ route('admin.pengaduan.index') }}">
-                Kelola Pengaduan
-            </a>
-        </li>
-    </ul>
+<div class="card">
+    <h3>Gallery</h3>
+    <p>{{ $jumlahGallery }}</p>
 
+    <a href="{{ route('admin.gallery.index') }}">
+        Kelola Gallery
+    </a>
+</div>
+
+<div class="card">
+    <h3>Kegiatan & Lomba</h3>
+    <p>{{ $jumlahKegiatan }}</p>
+
+    <a href="{{ route('admin.kegiatan-lomba.index') }}">
+        Kelola Kegiatan & Lomba
+    </a>
+</div>
+
+<div class="card">
+    <h3>Pengaduan</h3>
+    <p>{{ $jumlahPengaduan }}</p>
+
+    <a href="{{ route('admin.pengaduan.index') }}">
+        Kelola Pengaduan
+    </a>
 </div>
 
 <div class="card">
