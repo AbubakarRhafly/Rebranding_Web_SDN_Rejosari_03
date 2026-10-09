@@ -334,3 +334,175 @@
         font-size: 12px;
     }
 }
+
+/* Day 7: penyelarasan visual halaman Profil Guru */
+.profil-guru {
+    --warna-utama: #a84450;
+    --warna-kuning: #d6b66a;
+
+    color: #263244;
+}
+
+/* Judul lebih ringkas mengikuti arah desain direktori */
+.profil-guru__intro {
+    padding: 36px 28px;
+    background: #fbf5f5;
+    border: 1px solid #ead9dc;
+    border-top: 4px solid var(--warna-utama);
+    border-radius: 20px;
+}
+
+.profil-guru h1 {
+    max-width: 760px;
+    margin-bottom: 16px;
+    font-size: clamp(30px, 3.5vw, 42px);
+    line-height: 1.2;
+    letter-spacing: -0.6px;
+}
+
+.profil-guru__description {
+    color: #596579;
+}
+
+.profil-guru__button {
+    margin-top: 22px;
+    background: var(--warna-utama);
+    color: #ffffff;
+}
+
+.profil-guru__button:hover {
+    background: #893642;
+}
+
+/* Tautan menuju kelompok */
+.profil-guru__shortcuts a {
+    border-color: #e4d5d8;
+    color: #263244;
+    background: #ffffff;
+}
+
+.profil-guru__shortcuts a:hover {
+    background: #fbf5f5;
+    border-color: var(--warna-utama);
+}
+
+.profil-guru__shortcuts a span {
+    background: #f5e7e9;
+    color: #893642;
+}
+
+/* Kartu tetap memakai susunan desktop dan mobile sebelumnya */
+.profil-guru__card {
+    border-color: #e3e6eb;
+    box-shadow: 0 4px 16px rgb(38 50 68 / 4%);
+}
+
+.profil-guru__role {
+    color: #963c47;
+}
+
+.profil-guru__school {
+    color: #596579;
+}
+
+@media (max-width: 600px) {
+    .profil-guru__intro {
+        padding: 26px 18px;
+        border-radius: 16px;
+    }
+
+    .profil-guru h1 {
+        font-size: 28px;
+    }
+
+    .profil-guru__button {
+        margin-top: 20px;
+    }
+}
+
+/* Pencarian direktori guru dan staf */
+.profil-guru [hidden] {
+    display: none !important;
+}
+
+.profil-guru__search {
+    margin-top: 28px;
+    padding: 20px;
+    border: 1px solid #e3e6eb;
+    border-radius: 16px;
+    background: #ffffff;
+}
+
+.profil-guru__search label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.profil-guru__search-row {
+    display: flex;
+    gap: 12px;
+}
+
+.profil-guru__search input {
+    flex: 1;
+    min-width: 0;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid #b7bec8;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #263244;
+    font: inherit;
+    font-size: 16px;
+}
+
+.profil-guru__search input::placeholder {
+    color: #667085;
+}
+
+.profil-guru__search button {
+    min-height: 46px;
+    padding: 10px 16px;
+    border: 1px solid #e4d5d8;
+    border-radius: 10px;
+    background: #fbf5f5;
+    color: #893642;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.profil-guru__search button:disabled {
+    color: #667085;
+    background: #f3f4f6;
+    cursor: default;
+}
+
+.profil-guru__search input:focus-visible,
+.profil-guru__search button:focus-visible {
+    outline: 3px solid var(--warna-utama);
+    outline-offset: 3px;
+}
+
+#hasil-cari-guru {
+    margin: 12px 0 0;
+    color: #596579;
+    font-size: 13px;
+}
+
+#pencarian-kosong {
+    margin-top: 24px;
+}
+
+@media (max-width: 600px) {
+    .profil-guru__search {
+        padding: 16px;
+    }
+
+    .profil-guru__search-row {
+        flex-direction: column;
+    }
+}

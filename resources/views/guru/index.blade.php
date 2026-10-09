@@ -102,6 +102,29 @@ $kategori = [
             <p>Data guru dan staf belum tersedia.</p>
         </div>
         @else
+        <div class="profil-guru__search" role="search" hidden>
+            <label for="cari-guru">Cari guru dan staf</label>
+
+            <div class="profil-guru__search-row">
+                <input
+                    type="search"
+                    id="cari-guru"
+                    placeholder="Ketik nama atau jabatan..."
+                    aria-controls="daftar-guru"
+                    autocomplete="off">
+
+                <button type="button" id="reset-cari-guru">
+                    Hapus pencarian
+                </button>
+            </div>
+
+            <p id="hasil-cari-guru" role="status" aria-live="polite"></p>
+        </div>
+
+        <div id="pencarian-kosong" class="profil-guru__empty" hidden>
+            <p>Tidak ada nama atau jabatan yang cocok.</p>
+            <p>Coba kata lain atau hapus pencarian.</p>
+        </div>
         <div
             class="profil-guru__shortcuts"
             role="group"
@@ -185,4 +208,5 @@ $kategori = [
         @endif
     </div>
 </main>
+<script src="{{ asset('js/profil-guru.js') }}" defer></script>
 @endsection
