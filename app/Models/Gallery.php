@@ -13,7 +13,6 @@ class Gallery extends Model
         'deskripsi',
         'tanggal',
         'thumbnail',
-        'thumbnail_asli',
         'status',
     ];
 
