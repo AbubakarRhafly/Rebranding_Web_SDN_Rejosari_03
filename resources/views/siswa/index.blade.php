@@ -126,3 +126,36 @@
 @push('scripts')
 <script>
 (() => {
+    const page = document.getElementById('siswa-page');
+    const search = page?.querySelector('#siswa-search');
+    if (!search) return;
+    const kelas = page.querySelector('#siswa-kelas');
+    const cards = Array.from(page.querySelectorAll('.siswa-card'));
+    const result = page.querySelector('#siswa-result');
+    const empty = page.querySelector('#siswa-no-results');
+    function filterSiswa() {
+        const query = search.value.trim().toLocaleLowerCase('id');
+        let count = 0;
+        cards.forEach(card => {
+            const match = card.dataset.siswaName.toLocaleLowerCase('id').includes(query)
+                && (!kelas.value || card.dataset.siswaClass === kelas.value);
+            card.hidden = !match;
+            if (match) count++;
+        });
+        result.textContent = `Menampilkan ${count} dari ${cards.length} siswa aktif terdata.`;
+        empty.hidden = count !== 0;
+        page.querySelector('#siswa-grid').hidden = count === 0;
+    }
+    search.addEventListener('input', filterSiswa);
+    kelas.addEventListener('change', filterSiswa);
+    page.querySelector('#siswa-reset').addEventListener('click', () => {
+        search.value = '';
+        kelas.value = '';
+        filterSiswa();
+        search.focus();
+    });
+    page.querySelector('#siswa-filters').hidden = false;
+    filterSiswa();
+})();
+</script>
+@endpush
