@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -46,21 +47,34 @@ class GalleryController extends Controller
             'urutan_baru.*'     => 'nullable|integer|min:0',
         ]);
 
-        DB::transaction(function () use ($request, $validated) {
-            $data = Arr::only($validated, ['judul', 'deskripsi', 'tanggal', 'status']);
+        // File yang sudah ditulis ke disk selama request ini.
+        // Dihapus kembali jika transaksi gagal.
+        $newFiles = [];
 
-            if ($request->hasFile('thumbnail')) {
-                $data['thumbnail'] = $request->file('thumbnail')->store('gallery/thumbnail', 'public');
-            }
+        try {
+            DB::transaction(function () use ($request, $validated, &$newFiles) {
+                $data = Arr::only($validated, ['judul', 'deskripsi', 'tanggal', 'status']);
 
-            if ($request->hasFile('thumbnail_asli')) {
-                $data['thumbnail_asli'] = $request->file('thumbnail_asli')->store('gallery/thumbnail/asli', 'public');
-            }
+                if ($request->hasFile('thumbnail')) {
+                    $data['thumbnail'] = $this->simpanFile(
+                        $request->file('thumbnail'), 'gallery/thumbnail', $newFiles
+                    );
+                }
 
-            $gallery = Gallery::create($data);
+                if ($request->hasFile('thumbnail_asli')) {
+                    $data['thumbnail_asli'] = $this->simpanFile(
+                        $request->file('thumbnail_asli'), 'gallery/thumbnail/asli', $newFiles
+                    );
+                }
 
-            $this->simpanFotoBaru($request, $gallery);
-        });
+                $gallery = Gallery::create($data);
+
+                $this->simpanFotoBaru($request, $gallery, $newFiles);
+            });
+        } catch (\Throwable $e) {
+            $this->hapusBanyak($newFiles);
+            throw $e;
+        }
 
         return redirect()
             ->route('admin.gallery.index')
@@ -104,54 +118,92 @@ class GalleryController extends Controller
             'urutan_baru.*'     => 'nullable|integer|min:0',
         ]);
 
-        DB::transaction(function () use ($request, $validated, $gallery) {
-            $data = Arr::only($validated, ['judul', 'deskripsi', 'tanggal', 'status']);
+        $filesToDelete = []; // file lama: dihapus SETELAH commit
+        $newFiles      = []; // file baru: dihapus jika transaksi GAGAL
 
-            // Hasil crop thumbnail
-            if ($request->hasFile('thumbnail')) {
-                $this->hapusFile($gallery->thumbnail);
-                $data['thumbnail'] = $request->file('thumbnail')->store('gallery/thumbnail', 'public');
-            }
+        try {
+            DB::transaction(function () use (
+                $request,
+                $validated,
+                $gallery,
+                &$filesToDelete,
+                &$newFiles
+            ) {
+                $data = Arr::only($validated, ['judul', 'deskripsi', 'tanggal', 'status']);
 
-            // Thumbnail asli: hanya diganti jika user memilih file baru
-            if ($request->hasFile('thumbnail_asli')) {
-                $this->hapusFile($gallery->thumbnail_asli);
-                $data['thumbnail_asli'] = $request->file('thumbnail_asli')->store('gallery/thumbnail/asli', 'public');
-            }
+                // Hasil crop thumbnail
+                if ($request->hasFile('thumbnail')) {
+                    if ($gallery->thumbnail) {
+                        $filesToDelete[] = $gallery->thumbnail;
+                    }
 
-            $gallery->update($data);
-
-            // Hapus foto
-            $hapus = $request->input('hapus_foto', []);
-
-            foreach ($gallery->foto()->whereIn('id', $hapus)->get() as $foto) {
-                $this->hapusFile($foto->foto);
-                $this->hapusFile($foto->foto_asli);
-                $foto->delete();
-            }
-
-            // Update foto lama (foto_asli tidak disentuh)
-            $ganti = $request->file('foto_ganti', []);
-
-            foreach ($gallery->foto()->get() as $foto) {
-                $row = $request->input("foto_lama.{$foto->id}", []);
-
-                $update = [
-                    'keterangan' => $row['keterangan'] ?? $foto->keterangan,
-                    'urutan'     => (int) ($row['urutan'] ?? $foto->urutan),
-                ];
-
-                if (isset($ganti[$foto->id])) {
-                    $this->hapusFile($foto->foto);
-                    $update['foto'] = $ganti[$foto->id]->store('gallery/foto', 'public');
+                    $data['thumbnail'] = $this->simpanFile(
+                        $request->file('thumbnail'), 'gallery/thumbnail', $newFiles
+                    );
                 }
 
-                $foto->update($update);
-            }
+                // Thumbnail asli: hanya diganti jika user memilih file baru
+                if ($request->hasFile('thumbnail_asli')) {
+                    if ($gallery->thumbnail_asli) {
+                        $filesToDelete[] = $gallery->thumbnail_asli;
+                    }
 
-            // Tambah foto baru
-            $this->simpanFotoBaru($request, $gallery);
-        });
+                    $data['thumbnail_asli'] = $this->simpanFile(
+                        $request->file('thumbnail_asli'), 'gallery/thumbnail/asli', $newFiles
+                    );
+                }
+
+                $gallery->update($data);
+
+                // Hapus foto
+                $hapus = $request->input('hapus_foto', []);
+
+                foreach ($gallery->foto()->whereIn('id', $hapus)->get() as $foto) {
+                    if ($foto->foto) {
+                        $filesToDelete[] = $foto->foto;
+                    }
+                    if ($foto->foto_asli) {
+                        $filesToDelete[] = $foto->foto_asli;
+                    }
+
+                    $foto->delete();
+                }
+
+                // Update foto lama (foto_asli tidak disentuh)
+                $ganti = $request->file('foto_ganti', []);
+
+                foreach ($gallery->foto()->get() as $foto) {
+                    $row = $request->input("foto_lama.{$foto->id}", []);
+
+                    $update = [
+                        'keterangan' => $row['keterangan'] ?? $foto->keterangan,
+                        'urutan'     => (int) ($row['urutan'] ?? $foto->urutan),
+                    ];
+
+                    if (isset($ganti[$foto->id])) {
+                        if ($foto->foto) {
+                            $filesToDelete[] = $foto->foto;
+                        }
+
+                        $update['foto'] = $this->simpanFile(
+                            $ganti[$foto->id], 'gallery/foto', $newFiles
+                        );
+                    }
+
+                    $foto->update($update);
+                }
+
+                // Tambah foto baru
+                $this->simpanFotoBaru($request, $gallery, $newFiles);
+            });
+        } catch (\Throwable $e) {
+            // Database di-rollback: file lama masih utuh, buang file baru.
+            $this->hapusBanyak($newFiles);
+            throw $e;
+        }
+
+        // Commit sukses: aman menghapus file lama.
+        $this->hapusBanyak($filesToDelete);
 
         return redirect()
             ->route('admin.gallery.index')
@@ -162,15 +214,23 @@ class GalleryController extends Controller
     {
         $gallery = Gallery::with('foto')->findOrFail($id);
 
+        $filesToDelete = [];
+
         foreach ($gallery->foto as $foto) {
-            $this->hapusFile($foto->foto);
-            $this->hapusFile($foto->foto_asli);
+            $filesToDelete[] = $foto->foto;
+            $filesToDelete[] = $foto->foto_asli;
         }
 
-        $this->hapusFile($gallery->thumbnail);
-        $this->hapusFile($gallery->thumbnail_asli);
+        $filesToDelete[] = $gallery->thumbnail;
+        $filesToDelete[] = $gallery->thumbnail_asli;
 
-        $gallery->delete();
+        DB::transaction(function () use ($gallery) {
+            $gallery->foto()->delete();
+            $gallery->delete();
+        });
+
+        // File baru dihapus setelah baris database benar-benar hilang.
+        $this->hapusBanyak($filesToDelete);
 
         return redirect()
             ->route('admin.gallery.index')
@@ -184,7 +244,26 @@ class GalleryController extends Controller
         }
     }
 
-    private function simpanFotoBaru(Request $request, Gallery $gallery): void
+    private function hapusBanyak(array $paths): void
+    {
+        foreach (array_unique(array_filter($paths)) as $path) {
+            $this->hapusFile($path);
+        }
+    }
+
+    /**
+     * Simpan file ke disk public dan catat path-nya agar bisa
+     * dibersihkan bila transaksi gagal.
+     */
+    private function simpanFile(UploadedFile $file, string $dir, array &$newFiles): string
+    {
+        $path = $file->store($dir, 'public');
+        $newFiles[] = $path;
+
+        return $path;
+    }
+
+    private function simpanFotoBaru(Request $request, Gallery $gallery, array &$newFiles): void
     {
         $files  = $request->file('foto_baru', []);
         $asli   = $request->file('foto_asli_baru', []);
@@ -193,8 +272,10 @@ class GalleryController extends Controller
 
         foreach ($files as $i => $file) {
             $gallery->foto()->create([
-                'foto'       => $file->store('gallery/foto', 'public'),
-                'foto_asli'  => isset($asli[$i]) ? $asli[$i]->store('gallery/foto/asli', 'public') : null,
+                'foto'       => $this->simpanFile($file, 'gallery/foto', $newFiles),
+                'foto_asli'  => isset($asli[$i])
+                    ? $this->simpanFile($asli[$i], 'gallery/foto/asli', $newFiles)
+                    : null,
                 'keterangan' => $ket[$i] ?? null,
                 'urutan'     => (int) ($urutan[$i] ?? 0),
             ]);
