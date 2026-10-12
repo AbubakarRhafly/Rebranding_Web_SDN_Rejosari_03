@@ -1,104 +1,105 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Gallery')
+@section('title', 'Tambah Galeri')
 
 @section('content')
 
-<h1>Tambah Gallery</h1>
+<h1>Tambah Galeri</h1>
 
 @if ($errors->any())
     <div class="card">
-
         <strong>Terjadi kesalahan:</strong>
-
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
-
     </div>
 @endif
 
-<div class="card">
+<form
+    id="galleryForm"
+    action="{{ route('admin.gallery.store') }}"
+    method="POST"
+    enctype="multipart/form-data"
+>
+    @csrf
 
-    <form action="{{ route('admin.gallery.store') }}" method="POST">
+    {{-- ================= BAGIAN 1: GALLERY ================= --}}
 
-        @csrf
+    <div class="card">
 
-        <p>
-            <label>Judul Gallery</label><br>
-
-            <input
-                type="text"
-                name="judul"
-                value="{{ old('judul') }}"
-                required
-            >
-        </p>
+        <h2>Data Galeri</h2>
 
         <p>
-            <label>Tanggal</label><br>
-
-            <input
-                type="date"
-                name="tanggal"
-                value="{{ old('tanggal') }}"
-            >
-        </p>
-
-        <p>
-            <label>Thumbnail</label><br>
-
-            <input
-                type="text"
-                name="thumbnail"
-                value="{{ old('thumbnail') }}"
-                placeholder="Path thumbnail (sementara)"
-            >
+            <label>Judul</label><br>
+            <input type="text" name="judul" value="{{ old('judul') }}" required>
         </p>
 
         <p>
             <label>Deskripsi</label><br>
-
-            <textarea
-                name="deskripsi"
-                rows="6"
-            >{{ old('deskripsi') }}</textarea>
+            <textarea name="deskripsi" rows="4">{{ old('deskripsi') }}</textarea>
         </p>
 
         <p>
+            <label>Tanggal</label><br>
+            <input type="date" name="tanggal" value="{{ old('tanggal') }}">
+        </p>
+
+        <p>
+            <label>Thumbnail (4:3)</label><br>
+            <input type="file" id="thumbPick" accept="image/*">
+        </p>
+
+        <p>
+            <img
+                id="thumbPreview"
+                src=""
+                alt="Preview thumbnail"
+                style="display:none; width:240px; aspect-ratio:4/3; object-fit:cover;
+                       border:1px solid #ddd; border-radius:8px;"
+            >
+        </p>
+
+        <p>
+            <button type="button" id="thumbRecrop" style="display:none;">Crop Ulang Thumbnail</button>
+        </p>
+
+        <input type="file" id="thumbCrop" name="thumbnail" style="display:none;">
+
+        <p>
             <label>Status</label><br>
-
-            <select name="status" required>
-
-                <option
-                    value="aktif"
-                    {{ old('status', 'aktif') == 'aktif' ? 'selected' : '' }}
-                >
-                    Aktif
-                </option>
-
-                <option
-                    value="nonaktif"
-                    {{ old('status') == 'nonaktif' ? 'selected' : '' }}
-                >
-                    Nonaktif
-                </option>
-
+            <select name="status">
+                <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                <option value="nonaktif" {{ old('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
             </select>
         </p>
 
-        <button type="submit">
-            Simpan
-        </button>
+    </div>
 
-        <a href="{{ route('admin.gallery.index') }}">
-            Batal
-        </a>
+    {{-- ================= BAGIAN 2: GALLERY FOTO ================= --}}
 
-    </form>
+    <div class="card">
 
-</div>
+        <h2>Foto Galeri</h2>
+
+        <p>
+            <label>Tambah Foto</label><br>
+            <input type="file" id="fotoAdd" accept="image/*" multiple>
+        </p>
+
+        <div id="fotoList"></div>
+
+    </div>
+
+    <button type="submit">Simpan</button>
+    <a href="{{ route('admin.gallery.index') }}">Batal</a>
+
+</form>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+<script src="{{ asset('js/gallery-form.js') }}"></script>
 
 @endsection

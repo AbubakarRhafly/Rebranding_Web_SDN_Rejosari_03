@@ -18,9 +18,9 @@ class KegiatanLomba extends Model
         'hasil',
         'tanggal',
         'foto',
+        'dokumentasi',
         'deskripsi',
     ];
-
     protected $casts = [
         'tanggal' => 'date',
     ];

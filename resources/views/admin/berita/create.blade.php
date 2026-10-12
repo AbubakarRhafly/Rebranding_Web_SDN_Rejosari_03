@@ -9,7 +9,6 @@
 @if ($errors->any())
     <div class="card">
         <strong>Terjadi kesalahan:</strong>
-
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -20,12 +19,15 @@
 
 <div class="card">
 
-    <form action="{{ route('admin.berita.store') }}" method="POST">
+    <form
+        action="{{ route('admin.berita.store') }}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
         @csrf
 
         <p>
             <label>Judul</label><br>
-
             <input
                 type="text"
                 name="judul"
@@ -36,7 +38,6 @@
 
         <p>
             <label>Slug</label><br>
-
             <input
                 type="text"
                 name="slug"
@@ -46,19 +47,18 @@
         </p>
 
         <p>
-            <label>Thumbnail</label><br>
-
+            <label>Thumbnail Berita</label><br>
             <input
-                type="text"
+                type="file"
                 name="thumbnail"
-                value="{{ old('thumbnail') }}"
-                placeholder="Path thumbnail (sementara)"
+                accept="image/jpeg,image/png,image/webp"
             >
+            <br>
+            <small>Format JPG, JPEG, PNG, WEBP. Maksimal 5 MB.</small>
         </p>
 
         <p>
             <label>Kategori</label><br>
-
             <input
                 type="text"
                 name="kategori"
@@ -69,7 +69,6 @@
 
         <p>
             <label>Penulis</label><br>
-
             <input
                 type="text"
                 name="penulis"
@@ -79,7 +78,6 @@
 
         <p>
             <label>Tanggal Publish</label><br>
-
             <input
                 type="datetime-local"
                 name="tanggal_publish"
@@ -89,29 +87,20 @@
 
         <p>
             <label>Status</label><br>
-
             <select name="status" required>
-
-                <option
-                    value="draft"
-                    {{ old('status', 'draft') == 'draft' ? 'selected' : '' }}
-                >
+                <option value="draft"
+                    {{ old('status', 'draft') == 'draft' ? 'selected' : '' }}>
                     Draft
                 </option>
-
-                <option
-                    value="published"
-                    {{ old('status') == 'published' ? 'selected' : '' }}
-                >
+                <option value="published"
+                    {{ old('status') == 'published' ? 'selected' : '' }}>
                     Published
                 </option>
-
             </select>
         </p>
 
         <p>
             <label>Isi Berita</label><br>
-
             <textarea
                 name="isi"
                 rows="10"
@@ -119,14 +108,9 @@
             >{{ old('isi') }}</textarea>
         </p>
 
-        <button type="submit">
-            Simpan
-        </button>
+        <button type="submit">Simpan</button>
 
-        <a href="{{ route('admin.berita.index') }}">
-            Batal
-        </a>
-
+        <a href="{{ route('admin.berita.index') }}">Batal</a>
     </form>
 
 </div>

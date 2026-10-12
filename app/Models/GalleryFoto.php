@@ -12,6 +12,7 @@ class GalleryFoto extends Model
     protected $fillable = [
         'gallery_id',
         'foto',
+        'foto_asli',
         'keterangan',
         'urutan',
     ];

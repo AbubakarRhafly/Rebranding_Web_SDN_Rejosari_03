@@ -1,107 +1,73 @@
 @extends('layouts.app')
 
-@section('title', 'Data Gallery')
+@section('title', 'Galeri')
 
 @section('content')
 
-<h1>Data Gallery</h1>
+<h1>Galeri Sekolah</h1>
 
 @if (session('success'))
-    <div class="card">
-        {{ session('success') }}
-    </div>
+    <div class="card">{{ session('success') }}</div>
 @endif
 
-<div class="card">
+<p>
+    <a href="{{ route('admin.gallery.create') }}">+ Tambah Galeri</a>
+</p>
 
-    <p>
-        <a href="{{ route('admin.gallery.create') }}">
-            + Tambah Gallery
-        </a>
-    </p>
+<div class="grid">
 
-    <table border="1" cellpadding="8" cellspacing="0" width="100%">
+    @foreach ($gallery as $item)
 
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Judul</th>
-                <th>Tanggal</th>
-                <th>Jumlah Foto</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
+        <div class="card">
 
-        <tbody>
+            @if ($item->thumbnail)
+                <img
+                    src="{{ asset('storage/' . $item->thumbnail) }}"
+                    alt="{{ $item->judul }}"
+                    style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:8px;"
+                >
+            @else
+                <div style="width:100%; aspect-ratio:4/3; background:#eee; border-radius:8px;
+                            display:flex; align-items:center; justify-content:center;">
+                    Tanpa thumbnail
+                </div>
+            @endif
 
-            @forelse ($gallery as $item)
+            <h2>{{ $item->judul }}</h2>
 
-                <tr>
+            <p>{{ $item->deskripsi }}</p>
 
-                    <td>
-                        {{ $loop->iteration }}
-                    </td>
+            <p>
+                <strong>Tanggal:</strong>
+                {{ optional($item->tanggal)->format('d-m-Y') }}
+            </p>
 
-                    <td>
-                        {{ $item->judul }}
-                    </td>
+            <p>
+                <strong>Status:</strong> {{ ucfirst($item->status) }}
+            </p>
 
-                    <td>
-                        {{ $item->tanggal
-                            ? $item->tanggal->format('d-m-Y')
-                            : '-' }}
-                    </td>
+            <p>
+                <strong>Jumlah Foto:</strong> {{ $item->foto->count() }}
+            </p>
 
-                    <td>
-                        {{ $item->foto->count() }}
-                    </td>
+            <hr>
 
-                    <td>
-                        {{ $item->status }}
-                    </td>
+            <a href="{{ route('admin.gallery.edit', $item->id) }}">Edit</a>
 
-                    <td>
+            <form
+                action="{{ route('admin.gallery.destroy', $item->id) }}"
+                method="POST"
+                style="display:inline;"
+                onsubmit="return confirm('Hapus galeri ini beserta semua fotonya?')"
+            >
+                @csrf
+                @method('DELETE')
+                <button type="submit">Hapus</button>
+            </form>
 
-                        <a href="{{ route('admin.gallery.edit', $item->id) }}">
-                            Edit
-                        </a>
+        </div>
 
-                        <form
-                            action="{{ route('admin.gallery.destroy', $item->id) }}"
-                            method="POST"
-                            style="display:inline;"
-                        >
-
-                            @csrf
-                            @method('DELETE')
-
-                            <button
-                                type="submit"
-                                onclick="return confirm('Yakin ingin menghapus gallery ini?')"
-                            >
-                                Hapus
-                            </button>
-
-                        </form>
-
-                    </td>
-
-                </tr>
-
-            @empty
-
-                <tr>
-                    <td colspan="6">
-                        Belum ada gallery.
-                    </td>
-                </tr>
-
-            @endforelse
-
-        </tbody>
-
-    </table>
+    @endforeach
 
 </div>
 

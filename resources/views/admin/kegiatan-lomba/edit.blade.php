@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Edit Kegiatan Lomba')
@@ -8,167 +9,133 @@
 
 @if ($errors->any())
     <div class="card">
-
         <strong>Terjadi kesalahan:</strong>
-
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
-
     </div>
 @endif
 
 <div class="card">
-
     <form
         action="{{ route('admin.kegiatan-lomba.update', $kegiatan->id) }}"
         method="POST"
+        enctype="multipart/form-data"
     >
-
         @csrf
         @method('PUT')
 
         <p>
-            <label>Kategori</label><br>
-
-            <select name="kategori" required>
-
-                <option value="MAPSI"
-                    {{ old('kategori', $kegiatan->kategori) == 'MAPSI' ? 'selected' : '' }}>
-                    MAPSI
-                </option>
-
-                <option value="Literasi"
-                    {{ old('kategori', $kegiatan->kategori) == 'Literasi' ? 'selected' : '' }}>
-                    Literasi
-                </option>
-
-                <option value="Bahasa Jawa"
-                    {{ old('kategori', $kegiatan->kategori) == 'Bahasa Jawa' ? 'selected' : '' }}>
-                    Bahasa Jawa
-                </option>
-
-                <option value="Siswa Berprestasi"
-                    {{ old('kategori', $kegiatan->kategori) == 'Siswa Berprestasi' ? 'selected' : '' }}>
-                    Siswa Berprestasi
-                </option>
-
-                <option value="Motivasi & Inspiratif"
-                    {{ old('kategori', $kegiatan->kategori) == 'Motivasi & Inspiratif' ? 'selected' : '' }}>
-                    Motivasi & Inspiratif
-                </option>
-
+            <label for="kategori">Kategori</label><br>
+            <select name="kategori" id="kategori" required>
+                @foreach ([
+                    'MAPSI',
+                    'Literasi',
+                    'Bahasa Jawa',
+                    'Siswa Berprestasi',
+                    'Motivasi & Inspiratif'
+                ] as $kategori)
+                    <option value="{{ $kategori }}"
+                        {{ old('kategori', $kegiatan->kategori) == $kategori ? 'selected' : '' }}>
+                        {{ $kategori }}
+                    </option>
+                @endforeach
             </select>
         </p>
 
         <p>
-            <label>Judul Kegiatan</label><br>
-
-            <input
-                type="text"
-                name="judul"
-                value="{{ old('judul', $kegiatan->judul) }}"
-                required
-            >
+            <label for="judul">Judul Kegiatan</label><br>
+            <input type="text" id="judul" name="judul"
+                   value="{{ old('judul', $kegiatan->judul) }}"
+                   maxlength="255" required>
         </p>
 
         <p>
-            <label>Nama Peserta</label><br>
-
-            <input
-                type="text"
-                name="nama_peserta"
-                value="{{ old('nama_peserta', $kegiatan->nama_peserta) }}"
-            >
+            <label for="nama_peserta">Nama Peserta</label><br>
+            <input type="text" id="nama_peserta" name="nama_peserta"
+                   value="{{ old('nama_peserta', $kegiatan->nama_peserta) }}"
+                   maxlength="150">
         </p>
 
         <p>
-            <label>Kelas</label><br>
-
-            <input
-                type="text"
-                name="kelas"
-                value="{{ old('kelas', $kegiatan->kelas) }}"
-            >
+            <label for="kelas">Kelas</label><br>
+            <input type="text" id="kelas" name="kelas"
+                   value="{{ old('kelas', $kegiatan->kelas) }}"
+                   maxlength="20">
         </p>
 
         <p>
-            <label>Jenis Kegiatan</label><br>
-
-            <input
-                type="text"
-                name="jenis_kegiatan"
-                value="{{ old('jenis_kegiatan', $kegiatan->jenis_kegiatan) }}"
-            >
+            <label for="jenis_kegiatan">Jenis Kegiatan</label><br>
+            <input type="text" id="jenis_kegiatan" name="jenis_kegiatan"
+                   value="{{ old('jenis_kegiatan', $kegiatan->jenis_kegiatan) }}"
+                   maxlength="150">
         </p>
 
         <p>
-            <label>Tingkat</label><br>
-
-            <input
-                type="text"
-                name="tingkat"
-                value="{{ old('tingkat', $kegiatan->tingkat) }}"
-            >
+            <label for="tingkat">Tingkat</label><br>
+            <input type="text" id="tingkat" name="tingkat"
+                   value="{{ old('tingkat', $kegiatan->tingkat) }}"
+                   maxlength="100">
         </p>
 
         <p>
-            <label>Hasil</label><br>
-
-            <input
-                type="text"
-                name="hasil"
-                value="{{ old('hasil', $kegiatan->hasil) }}"
-            >
+            <label for="hasil">Hasil</label><br>
+            <input type="text" id="hasil" name="hasil"
+                   value="{{ old('hasil', $kegiatan->hasil) }}"
+                   maxlength="150">
         </p>
 
         <p>
-            <label>Tanggal</label><br>
-
-            <input
-                type="date"
-                name="tanggal"
-                value="{{ old(
-                    'tanggal',
-                    $kegiatan->tanggal
-                        ? $kegiatan->tanggal->format('Y-m-d')
-                        : ''
-                ) }}"
-            >
+            <label for="tanggal">Tanggal</label><br>
+            <input type="date" id="tanggal" name="tanggal"
+                   value="{{ old('tanggal', $kegiatan->tanggal ? $kegiatan->tanggal->format('Y-m-d') : '') }}">
         </p>
 
         <p>
-            <label>Foto</label><br>
-
-            <input
-                type="text"
-                name="foto"
-                value="{{ old('foto', $kegiatan->foto) }}"
-                placeholder="Path foto (sementara)"
-            >
+            <label for="foto">Foto (Path Lama, Opsional)</label><br>
+            <input type="text" id="foto" name="foto"
+                   value="{{ old('foto', $kegiatan->foto) }}"
+                   maxlength="255">
         </p>
 
         <p>
-            <label>Deskripsi</label><br>
+            <strong>Dokumentasi Siswa dan Piagam Saat Ini</strong><br>
 
-            <textarea
-                name="deskripsi"
-                rows="6"
-            >{{ old('deskripsi', $kegiatan->deskripsi) }}</textarea>
+            @if ($kegiatan->dokumentasi)
+                <img
+                    src="{{ asset('storage/' . $kegiatan->dokumentasi) }}"
+                    alt="Dokumentasi {{ $kegiatan->judul }}"
+                    style="max-width: 300px; max-height: 300px; object-fit: contain;"
+                >
+            @else
+                <span>Belum ada dokumentasi.</span>
+            @endif
         </p>
 
-        <button type="submit">
-            Simpan Perubahan
-        </button>
+        <p>
+            <label for="dokumentasi">Ganti Dokumentasi</label><br>
+            <input
+                type="file"
+                id="dokumentasi"
+                name="dokumentasi"
+                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+            ><br>
+            <small>
+                Format JPG, JPEG, PNG, atau WEBP. Maksimal 5 MB.
+                Kosongkan jika tidak ingin mengganti dokumentasi.
+            </small>
+        </p>
 
-        <a href="{{ route('admin.kegiatan-lomba.index') }}">
-            Batal
-        </a>
+        <p>
+            <label for="deskripsi">Deskripsi</label><br>
+            <textarea id="deskripsi" name="deskripsi" rows="6">{{ old('deskripsi', $kegiatan->deskripsi) }}</textarea>
+        </p>
 
+        <button type="submit">Simpan Perubahan</button>
+        <a href="{{ route('admin.kegiatan-lomba.index') }}">Batal</a>
     </form>
-
 </div>
 
 @endsection
