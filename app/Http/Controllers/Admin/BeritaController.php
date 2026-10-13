@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class BeritaController extends Controller
@@ -26,7 +27,7 @@ class BeritaController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:berita,slug',
-            'thumbnail' => 'nullable|string|max:255',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'isi' => 'required|string',
             'kategori' => 'nullable|string|max:100',
             'penulis' => 'nullable|string|max:100',
@@ -36,6 +37,12 @@ class BeritaController extends Controller
 
         $validated['slug'] = $validated['slug']
             ?: Str::slug($validated['judul']);
+
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $request
+                ->file('thumbnail')
+                ->store('berita', 'public');
+        }
 
         Berita::create($validated);
 
@@ -58,7 +65,7 @@ class BeritaController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:berita,slug,' . $id,
-            'thumbnail' => 'nullable|string|max:255',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'isi' => 'required|string',
             'kategori' => 'nullable|string|max:100',
             'penulis' => 'nullable|string|max:100',
@@ -68,6 +75,16 @@ class BeritaController extends Controller
 
         $validated['slug'] = $validated['slug']
             ?: Str::slug($validated['judul']);
+
+        if ($request->hasFile('thumbnail')) {
+            if ($berita->thumbnail) {
+                Storage::disk('public')->delete($berita->thumbnail);
+            }
+
+            $validated['thumbnail'] = $request
+                ->file('thumbnail')
+                ->store('berita', 'public');
+        }
 
         $berita->update($validated);
 
@@ -79,6 +96,10 @@ class BeritaController extends Controller
     public function destroy($id)
     {
         $berita = Berita::findOrFail($id);
+
+        if ($berita->thumbnail) {
+            Storage::disk('public')->delete($berita->thumbnail);
+        }
 
         $berita->delete();
 

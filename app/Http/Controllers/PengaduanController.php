@@ -28,7 +28,7 @@ class PengaduanController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:150',
-            'email' => 'nullable|email|max:150',
+            'email' => 'required|email|max:150',
             'no_hp' => 'nullable|string|max:30',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string|max:5000',
@@ -36,7 +36,7 @@ class PengaduanController extends Controller
 
         Pengaduan::create([
             'nama' => $validated['nama'],
-            'email' => $validated['email'] ?? null,
+            'email' => $validated['email'],
             'no_hp' => $validated['no_hp'] ?? null,
             'judul' => $validated['judul'],
             'isi' => $validated['isi'],

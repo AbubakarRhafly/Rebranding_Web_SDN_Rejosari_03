@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\KegiatanLomba;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class KegiatanLombaController extends Controller
 {
@@ -32,8 +33,14 @@ class KegiatanLombaController extends Controller
             'hasil' => 'nullable|string|max:150',
             'tanggal' => 'nullable|date',
             'foto' => 'nullable|string|max:255',
+            'dokumentasi' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'deskripsi' => 'nullable|string',
         ]);
+
+        if ($request->hasFile('dokumentasi')) {
+            $validated['dokumentasi'] = $request->file('dokumentasi')
+                ->store('kegiatan-lomba/dokumentasi', 'public');
+        }
 
         KegiatanLomba::create($validated);
 
@@ -63,8 +70,18 @@ class KegiatanLombaController extends Controller
             'hasil' => 'nullable|string|max:150',
             'tanggal' => 'nullable|date',
             'foto' => 'nullable|string|max:255',
+            'dokumentasi' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'deskripsi' => 'nullable|string',
         ]);
+
+        if ($request->hasFile('dokumentasi')) {
+            if ($kegiatan->dokumentasi) {
+                Storage::disk('public')->delete($kegiatan->dokumentasi);
+            }
+
+            $validated['dokumentasi'] = $request->file('dokumentasi')
+                ->store('kegiatan-lomba/dokumentasi', 'public');
+        }
 
         $kegiatan->update($validated);
 
@@ -76,6 +93,10 @@ class KegiatanLombaController extends Controller
     public function destroy($id)
     {
         $kegiatan = KegiatanLomba::findOrFail($id);
+
+        if ($kegiatan->dokumentasi) {
+            Storage::disk('public')->delete($kegiatan->dokumentasi);
+        }
 
         $kegiatan->delete();
 
