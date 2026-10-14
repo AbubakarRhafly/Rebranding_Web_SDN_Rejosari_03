@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pengumuman;
-
 class PengumumanController extends Controller
 {
     public function index()
     {
-        $pengumuman = Pengumuman::where('status', 'published')
-            ->orderByDesc('tanggal_mulai')
-            ->get();
-
-        return view('pengumuman.index', compact('pengumuman'));
+        // Pertahankan URL lama, arahkan ke bagian pengumuman pada halaman gabungan.
+        return redirect()->to(route('berita.index').'#pengumuman');
     }
 }
