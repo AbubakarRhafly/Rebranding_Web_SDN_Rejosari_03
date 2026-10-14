@@ -1,0 +1,757 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #222;
+}
+
+
+/* Navbar */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 60px;
+
+    background-color: white;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 30px;
+
+    list-style: none;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #222;
+}
+
+
+/* Header Galeri */
+
+.gallery-header {
+    text-align: center;
+
+    padding: 70px 20px 50px;
+}
+
+.gallery-header h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.gallery-header p {
+    color: #666;
+}
+
+/* Filter Album */
+
+.gallery-filter {
+    width: 90%;
+    max-width: 1200px;
+
+    margin: 0 auto 40px;
+
+    background-color: white;
+
+    padding: 25px;
+
+    border-radius: 12px;
+}
+
+.filter-title {
+    margin-bottom: 20px;
+}
+
+.filter-title h2 {
+    margin-bottom: 8px;
+}
+
+.filter-title p {
+    color: #666;
+}
+
+.filter-content {
+    display: flex;
+    gap: 15px;
+}
+
+.filter-content input,
+.filter-content select {
+    padding: 13px 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+}
+
+.filter-content input {
+    flex: 1;
+}
+
+.filter-content select {
+    width: 220px;
+
+    background-color: white;
+}
+
+/* Gallery */
+
+.gallery {
+    width: 90%;
+    max-width: 1200px;
+
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+
+/* Album */
+
+.album {
+    background-color: white;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+.album img {
+    width: 100%;
+    height: 220px;
+
+    object-fit: cover;
+}
+
+.album-info {
+    padding: 20px;
+}
+
+.album-info span {
+    font-size: 13px;
+    color: #1b5e20;
+}
+
+.album-info h2 {
+    margin: 10px 0;
+}
+
+.album-info p {
+    color: #666;
+    line-height: 1.5;
+}
+
+.album-info a {
+    display: inline-block;
+
+    margin-top: 15px;
+
+    text-decoration: none;
+    color: #1b5e20;
+    font-weight: bold;
+}
+
+
+/* Footer */
+
+footer {
+    margin-top: 70px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    background-color: white;
+}
+
+
+/* Tablet */
+@media (max-width: 992px) {
+    .navbar {
+        padding: 20px 30px;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+
+/* HP */
+@media (max-width: 600px) {
+    /* Navbar */
+    .navbar {
+        width: 100%;
+        padding: 18px 16px;
+        gap: 16px;
+        flex-direction: column;
+    }
+
+     .logo {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .nav-menu {
+      width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px 18px;
+    }
+
+    .nav-menu a {
+        font-size: 14px;
+    }
+
+    .nav-menu li {
+        flex-shrink: 0;
+    }
+
+    /* Header Galeri */
+    .gallery-header {
+        padding: 45px 20px 30px;
+    }
+
+    .gallery-header h1 {
+        font-size: 30px;
+    }
+
+    .gallery-header p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* Filter Album */
+    .gallery-filter {
+        width: 92%;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+    .filter-title h2 {
+        font-size: 21px;
+    }
+
+    .filter-title p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .filter-content {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .filter-content input,
+    .filter-content select {
+        width: 100%;
+        min-width: 0;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    /* Daftar Album */
+
+    .gallery {
+        width: 92%;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .album {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .album img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+    }
+
+    .album-info {
+        padding: 18px;
+    }
+
+    .album-info h2 {
+        font-size: 19px;
+        line-height: 1.5;
+        overflow-wrap: break-word;
+    }
+
+    .album-info p {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .album-info a {
+        display: inline-block;
+        padding: 8px 0;
+    }
+
+
+    /* Footer */
+    footer {
+        margin-top: 45px;
+        padding: 25px 15px;
+        font-size: 14px;
+    }
+}
+
+
+/* Halaman Detail Album */
+    .detail-header {
+        width: 92%;
+        padding: 28px 0 22px;
+    }
+
+    .detail-header h1 {
+        font-size: 27px;
+        line-height: 1.4;
+        overflow-wrap: break-word;
+    }
+
+    .detail-header p {
+        font-size: 14px;
+    }
+
+    .album-photos {
+        width: 92%;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+        margin-bottom: 40px;
+    }
+
+    .photo-item {
+        width: 100%;
+    }
+
+    .photo-item img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+    }
+
+    .tombol-kembali {
+        font-size: 14px;
+    }
+/* Tampilan HP */
+@media (max-width: 600px) {
+    .detail-header {
+        padding-top: 30px;
+    }
+
+    .detail-header h1 {
+        font-size: 28px;
+        line-height: 1.4;
+    }
+
+    .album-photos {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .photo-item img {
+        height: 230px;
+    }
+}
+
+
+/* Popup Galeri */
+.album-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(10, 15, 30, 0.88);
+    padding: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.album-modal.show {
+    display: flex;
+}
+
+.modal-content {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(300px, 1fr);
+    width: 100%;
+    max-width: 1250px;
+    height: min(82vh, 780px);
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* Area Foto */
+.modal-photo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    background: #050817;
+    overflow: hidden;
+}
+
+.modal-photo img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.modal-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(20, 25, 40, 0.7);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.arrow-left {
+    left: 15px;
+}
+
+.arrow-right {
+    right: 15px;
+}
+
+.photo-counter {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    padding: 9px 14px;
+    border-radius: 25px;
+    background: rgba(20, 25, 40, 0.8);
+    color: white;
+    font-size: 14px;
+}
+
+/* Panel Informasi */
+.modal-info {
+    position: relative;
+    min-width: 0;
+    overflow-y: auto;
+    background: white;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #333;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.school-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 25px 65px 25px 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.school-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border: 2px solid #1b5e20;
+    border-radius: 50%;
+    color: #1b5e20;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.school-info h3 {
+    font-size: 16px;
+}
+
+.school-info p {
+    margin-top: 6px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.album-description {
+    padding: 25px 24px;
+}
+
+.album-description h2 {
+    margin-bottom: 12px;
+    font-size: 21px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.album-description > p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.photo-total {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 30px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.photo-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.photo-thumbnails img {
+    width: 82px;
+    height: 82px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.photo-thumbnails img.active {
+    border-color: #2563eb;
+}
+
+/* Tampilan HP */
+@media (max-width: 700px) {
+    .album-modal {
+        padding: 10px;
+    }
+
+    .modal-content {
+        display: flex;
+        flex-direction: column;
+        height: 90dvh;
+        max-height: 850px;
+        border-radius: 14px;
+    }
+
+    .modal-photo {
+        flex: 0 0 45%;
+        min-height: 180px;
+    }
+
+    .modal-photo img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .modal-arrow {
+        width: 36px;
+        height: 36px;
+    }
+
+    .arrow-left {
+        left: 8px;
+    }
+
+    .arrow-right {
+        right: 8px;
+    }
+
+    .photo-counter {
+        top: 10px;
+        left: 10px;
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+
+    .modal-info {
+        flex: 1;
+        min-height: 0;
+    }
+
+    .school-info {
+        padding: 16px 55px 16px 16px;
+    }
+
+    .school-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .school-info h3 {
+        font-size: 14px;
+    }
+
+    .album-description {
+        padding: 18px 16px;
+    }
+
+    .album-description h2 {
+        font-size: 18px;
+    }
+
+    .photo-total {
+        margin-top: 22px;
+    }
+
+    .photo-thumbnails img {
+        width: 65px;
+        height: 65px;
+    }
+}
+
+
+/* Tombol layar penuh */
+.fullscreen-toggle {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    background: rgba(20, 25, 40, 0.75);
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.fullscreen-toggle:hover {
+    background: rgba(60, 70, 95, 0.95);
+}
+
+@media (max-width: 700px) {
+    .fullscreen-toggle {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 22px;
+    }
+}
+
+
+.modal-videos {
+    width: 100%;
+}
+
+.modal-videos iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    border-radius: 10px;
+    background: #000;
+}
+
+.video-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.video-navigation button {
+    padding: 9px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.video-navigation span {
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .video-navigation button {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
+
+
+.modal-videos {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    align-self: center;
+}
+
+.modal-videos iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    border-radius: 10px;
+    background: #000;
+}
+
+.video-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.video-navigation button {
+    padding: 9px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.video-navigation button:hover {
+    opacity: 0.8;
+}
