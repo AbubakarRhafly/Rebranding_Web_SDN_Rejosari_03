@@ -36,23 +36,18 @@
 // Mengelompokkan tampilan berdasarkan jabatan yang sudah tersedia.
 // Urutan dari controller tetap dipertahankan dalam setiap kelompok.
 $kelompokGuru = $guru->groupBy(function ($item) {
-$jabatan = strtolower(trim((string) $item->jabatan));
-$jabatan = preg_replace('/\s+/', ' ', $jabatan);
+    $jabatan = strtolower(trim((string) $item->jabatan));
+    $jabatan = preg_replace('/\s+/', ' ', $jabatan);
 
-if (str_contains($jabatan, 'kepala sekolah')) {
-return 'kepala-sekolah';
-}
+    if (str_contains($jabatan, 'kepala sekolah')) {
+        return 'kepala-sekolah';
+    }
 
-if (preg_match('/^guru\b/', $jabatan)) {
-return 'guru';
-}
+    if (preg_match('/^(staf|staff|tenaga|petugas|operator|penjaga)\b/', $jabatan)) {
+        return 'staf';
+    }
 
-if (preg_match('/^(staf|staff|tenaga|petugas|operator|penjaga)\b/', $jabatan)) {
-return 'staf';
-}
-
-// Data dengan jabatan lain tetap ditampilkan.
-return 'lainnya';
+    return 'guru';
 });
 
 $kategori = [
@@ -70,11 +65,6 @@ $kategori = [
 'judul' => 'Staf',
 'label' => 'TENAGA KEPENDIDIKAN',
 'deskripsi' => 'Mendukung pelayanan dan kegiatan sehari-hari di sekolah.',
-],
-'lainnya' => [
-'judul' => 'Personel Lainnya',
-'label' => 'WARGA SEKOLAH',
-'deskripsi' => 'Personel lainnya di SDN Rejosari 03.',
 ],
 ];
 @endphp
