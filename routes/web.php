@@ -9,6 +9,7 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\KegiatanLombaController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GuruController as AdminGuruController;
 use App\Http\Controllers\Admin\SiswaController as AdminSiswaController;
@@ -43,7 +44,8 @@ Route::get('/berita', [BeritaController::class, 'index'])
 Route::get('/pengumuman', [PengumumanController::class, 'index'])
     ->name('pengumuman.index');
 
-
+Route::get('/kegiatan-lomba', [KegiatanLombaController::class, 'index'])
+    ->name('kegiatan-lomba.index');
 // Pengaduan User
 Route::get('/pengaduan', [PengaduanController::class, 'create'])
     ->name('pengaduan.create');
