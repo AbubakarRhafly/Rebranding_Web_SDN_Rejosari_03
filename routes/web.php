@@ -19,11 +19,16 @@ use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\KegiatanLombaController as AdminKegiatanLombaController;
 
 
-Route::get('/', function () {
-    return view('layouts.app', [
-        'title' => 'Beranda',
+Route::get('/', function (): \Illuminate\Contracts\View\View {
+    return view('beranda', [
+        'jumlahSiswa' => \App\Models\Siswa::where('status', 'aktif')->count(),
+        'jumlahGuru' => \App\Models\Guru::where('status', 'aktif')->count(),
+        'guruBeranda' => \App\Models\Guru::where('status', 'aktif')->orderBy('urutan')->limit(4)->get(),
+        'beritaBeranda' => \App\Models\Berita::where('status', 'published')->orderByDesc('tanggal_publish')->limit(4)->get(),
+        'pengumumanBeranda' => \App\Models\Pengumuman::where('status', 'published')->orderByDesc('tanggal_mulai')->limit(5)->get(),
+        'galeriBeranda' => \App\Models\Gallery::where('status', 'aktif')->orderByDesc('tanggal')->limit(6)->get(),
     ]);
-});
+})->name('beranda');
 
 
 // Profil
@@ -108,3 +113,4 @@ Route::prefix('admin')
 
         Route::resource('kegiatan-lomba', AdminKegiatanLombaController::class);
     });
+
