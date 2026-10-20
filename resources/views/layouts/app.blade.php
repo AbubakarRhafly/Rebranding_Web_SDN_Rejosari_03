@@ -278,9 +278,12 @@
     </style>
 
     @stack('styles')
+    @if (request()->is('admin', 'admin/*'))
+        <link rel="stylesheet" href="{{ asset('css/admin-panel.css') }}">
+    @endif
 </head>
 
-<body>
+<body class="{{ request()->is('admin', 'admin/*') ? 'admin-page' : '' }}">
     @php
         $menuUtama = [
             ['path' => '/', 'label' => 'Beranda'],
@@ -301,6 +304,21 @@
         ];
     @endphp
 
+    @if (request()->is('admin', 'admin/*'))
+    <header class="admin-header">
+        <div><strong>SDN Rejosari 03</strong><span>Panel administrasi</span></div>
+        <div class="admin-header-actions">
+            <a href="{{ url('/') }}">Lihat website ↗</a>
+            <form action="{{ route('logout') }}" method="POST">@csrf<button type="submit">Keluar</button></form>
+        </div>
+    </header>
+    <nav class="admin-navigation" aria-label="Navigasi admin">
+        <a href="{{ route('admin.dashboard') }}" @if(request()->routeIs('admin.dashboard')) aria-current="page" @endif>Dashboard</a>
+        @foreach (['guru' => 'Guru & Staf', 'siswa' => 'Siswa', 'berita' => 'Berita', 'pengumuman' => 'Pengumuman', 'gallery' => 'Galeri', 'kegiatan-lomba' => 'Kegiatan Lomba', 'pengaduan' => 'Pengaduan'] as $resource => $label)
+            <a href="{{ route('admin.'.$resource.'.index') }}" @if(request()->routeIs('admin.'.$resource.'.*')) aria-current="page" @endif>{{ $label }}</a>
+        @endforeach
+    </nav>
+    @else
     <nav class="site-nav" aria-label="Navigasi utama">
         <details class="site-nav__mobile">
             <summary>
@@ -330,10 +348,15 @@
         </div>
     </nav>
 
+    @endif
+
     <div class="container">
         @yield('content')
     </div>
 
+    @if (request()->is('admin', 'admin/*'))
+        <footer class="admin-footer">SDN Rejosari 03 · Panel administrasi</footer>
+    @else
     <footer class="site-footer">
         <div class="site-footer__inner">
             <section class="site-footer__column" aria-labelledby="footer-menu">
@@ -396,6 +419,8 @@
             </p>
         </div>
     </footer>
+
+    @endif
 
     @stack('scripts')
 </body>
