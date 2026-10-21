@@ -64,7 +64,7 @@ class BeritaController extends Controller
 
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:berita,slug,' . $id,
+            'slug' => 'nullable|string|max:255|unique:berita,slug,'.$id,
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'isi' => 'required|string',
             'kategori' => 'nullable|string|max:100',

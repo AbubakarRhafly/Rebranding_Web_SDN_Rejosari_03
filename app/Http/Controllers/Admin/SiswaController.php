@@ -18,12 +18,10 @@ class SiswaController extends Controller
         return view('admin.siswa.index', compact('siswa'));
     }
 
-
     public function create()
     {
         return view('admin.siswa.create');
     }
-
 
     public function store(Request $request)
     {
@@ -39,7 +37,6 @@ class SiswaController extends Controller
             'status' => 'required|in:aktif,nonaktif',
         ]);
 
-
         // Simpan foto
         if ($request->hasFile('foto')) {
 
@@ -50,9 +47,7 @@ class SiswaController extends Controller
 
         }
 
-
         Siswa::create($validated);
-
 
         return redirect()
             ->route('admin.siswa.index')
@@ -62,7 +57,6 @@ class SiswaController extends Controller
             );
     }
 
-
     public function edit($id)
     {
         $siswa = Siswa::findOrFail($id);
@@ -70,11 +64,9 @@ class SiswaController extends Controller
         return view('admin.siswa.edit', compact('siswa'));
     }
 
-
     public function update(Request $request, $id)
     {
         $siswa = Siswa::findOrFail($id);
-
 
         $validated = $request->validate([
             'nama' => 'required|string|max:150',
@@ -88,7 +80,6 @@ class SiswaController extends Controller
             'status' => 'required|in:aktif,nonaktif',
         ]);
 
-
         // Jika upload foto baru
         if ($request->hasFile('foto')) {
 
@@ -100,7 +91,6 @@ class SiswaController extends Controller
 
             }
 
-
             // Simpan foto baru
             $validated['foto'] =
                 $request
@@ -108,9 +98,7 @@ class SiswaController extends Controller
                     ->store('siswa', 'public');
         }
 
-
         $siswa->update($validated);
-
 
         return redirect()
             ->route('admin.siswa.index')
@@ -120,11 +108,9 @@ class SiswaController extends Controller
             );
     }
 
-
     public function destroy($id)
     {
         $siswa = Siswa::findOrFail($id);
-
 
         // Hapus foto
         if ($siswa->foto) {
@@ -134,9 +120,7 @@ class SiswaController extends Controller
 
         }
 
-
         $siswa->delete();
-
 
         return redirect()
             ->route('admin.siswa.index')

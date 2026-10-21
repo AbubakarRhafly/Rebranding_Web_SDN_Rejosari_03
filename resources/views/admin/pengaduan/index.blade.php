@@ -29,6 +29,7 @@
             <p><strong>Nama:</strong> {{ $item->nama }}</p>
             <p><strong>Email:</strong> {{ $item->email }}</p>
             <p><strong>No. HP:</strong> {{ $item->no_hp ?? '-' }}</p>
+            <p><strong>Kategori Keperluan:</strong> {{ $item->kategori_keperluan ?? 'Umum' }}</p>
 
             <p>
                 <strong>Isi Pengaduan:</strong><br>

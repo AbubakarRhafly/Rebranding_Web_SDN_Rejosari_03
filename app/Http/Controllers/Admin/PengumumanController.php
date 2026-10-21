@@ -16,12 +16,10 @@ class PengumumanController extends Controller
         return view('admin.pengumuman.index', compact('pengumuman'));
     }
 
-
     public function create()
     {
         return view('admin.pengumuman.create');
     }
-
 
     public function store(Request $request)
     {
@@ -30,21 +28,16 @@ class PengumumanController extends Controller
 
             'isi' => 'required|string',
 
-            'foto' =>
-                'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
 
             'tanggal_mulai' => 'nullable|date',
 
-            'tanggal_selesai' =>
-                'nullable|date|after_or_equal:tanggal_mulai',
+            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
 
-            'lampiran' =>
-                'nullable|file|max:5120',
+            'lampiran' => 'nullable|file|max:5120',
 
-            'status' =>
-                'required|in:draft,published',
+            'status' => 'required|in:draft,published',
         ]);
-
 
         // Simpan foto
         if ($request->hasFile('foto')) {
@@ -56,7 +49,6 @@ class PengumumanController extends Controller
 
         }
 
-
         // Simpan lampiran
         if ($request->hasFile('lampiran')) {
 
@@ -67,9 +59,7 @@ class PengumumanController extends Controller
 
         }
 
-
         Pengumuman::create($validated);
-
 
         return redirect()
             ->route('admin.pengumuman.index')
@@ -79,12 +69,10 @@ class PengumumanController extends Controller
             );
     }
 
-
     public function edit($id)
     {
         $pengumuman =
             Pengumuman::findOrFail($id);
-
 
         return view(
             'admin.pengumuman.edit',
@@ -92,33 +80,26 @@ class PengumumanController extends Controller
         );
     }
 
-
     public function update(Request $request, $id)
     {
         $pengumuman =
             Pengumuman::findOrFail($id);
-
 
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
 
             'isi' => 'required|string',
 
-            'foto' =>
-                'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
 
             'tanggal_mulai' => 'nullable|date',
 
-            'tanggal_selesai' =>
-                'nullable|date|after_or_equal:tanggal_mulai',
+            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
 
-            'lampiran' =>
-                'nullable|file|max:5120',
+            'lampiran' => 'nullable|file|max:5120',
 
-            'status' =>
-                'required|in:draft,published',
+            'status' => 'required|in:draft,published',
         ]);
-
 
         // Jika upload foto baru
         if ($request->hasFile('foto')) {
@@ -131,7 +112,6 @@ class PengumumanController extends Controller
 
             }
 
-
             // Simpan foto baru
             $validated['foto'] =
                 $request
@@ -139,7 +119,6 @@ class PengumumanController extends Controller
                     ->store('pengumuman/foto', 'public');
 
         }
-
 
         // Jika upload lampiran baru
         if ($request->hasFile('lampiran')) {
@@ -152,7 +131,6 @@ class PengumumanController extends Controller
 
             }
 
-
             // Simpan lampiran baru
             $validated['lampiran'] =
                 $request
@@ -161,9 +139,7 @@ class PengumumanController extends Controller
 
         }
 
-
         $pengumuman->update($validated);
-
 
         return redirect()
             ->route('admin.pengumuman.index')
@@ -173,12 +149,10 @@ class PengumumanController extends Controller
             );
     }
 
-
     public function destroy($id)
     {
         $pengumuman =
             Pengumuman::findOrFail($id);
-
 
         // Hapus foto
         if ($pengumuman->foto) {
@@ -188,7 +162,6 @@ class PengumumanController extends Controller
 
         }
 
-
         // Hapus lampiran
         if ($pengumuman->lampiran) {
 
@@ -197,9 +170,7 @@ class PengumumanController extends Controller
 
         }
 
-
         $pengumuman->delete();
-
 
         return redirect()
             ->route('admin.pengumuman.index')

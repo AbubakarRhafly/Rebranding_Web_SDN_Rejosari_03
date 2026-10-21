@@ -21,6 +21,7 @@
     <p><strong>Nama:</strong> {{ $pengaduan->nama }}</p>
     <p><strong>Email:</strong> {{ $pengaduan->email }}</p>
     <p><strong>No. HP:</strong> {{ $pengaduan->no_hp ?? '-' }}</p>
+    <p><strong>Kategori Keperluan:</strong> {{ $pengaduan->kategori_keperluan ?? 'Umum' }}</p>
     <p><strong>Judul:</strong> {{ $pengaduan->judul }}</p>
     <p><strong>Isi Pengaduan:</strong><br>{{ $pengaduan->isi }}</p>
     <p><strong>Dikirim:</strong> {{ $pengaduan->created_at->format('d-m-Y H:i') }}</p>

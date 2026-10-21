@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Guru;
-use App\Models\Siswa;
-use App\Models\Gallery;
 use App\Models\Berita;
-use App\Models\Pengumuman;
-use App\Models\Pengaduan;
+use App\Models\Gallery;
+use App\Models\Guru;
 use App\Models\KegiatanLomba;
+use App\Models\Pengaduan;
+use App\Models\Pengumuman;
+use App\Models\Siswa;
 
 class DashboardController extends Controller
 {

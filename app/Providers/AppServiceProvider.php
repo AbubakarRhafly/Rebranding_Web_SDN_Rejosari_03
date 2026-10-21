@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(5)
                 ->by(
                     strtolower($request->input('email', ''))
-                    . '|' .
+                    .'|'.
                     $request->ip()
                 );
         });

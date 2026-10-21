@@ -42,7 +42,7 @@ class ProfilGuruSeeder extends Seeder
                     ['nama' => $nama],
                     [
                         'jabatan' => $jabatan,
-                        'foto' => 'images/guru/' . $foto,
+                        'foto' => 'images/guru/'.$foto,
                         'kata_kata' => null,
                         'urutan' => $index + 1,
                         'status' => 'aktif',

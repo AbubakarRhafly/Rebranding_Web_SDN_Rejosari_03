@@ -16,7 +16,7 @@ return new class extends Migration
                 'Literasi',
                 'Bahasa Jawa',
                 'Siswa Berprestasi',
-                'Motivasi & Inspiratif'
+                'Motivasi & Inspiratif',
             ]);
 
             $table->string('judul', 255);

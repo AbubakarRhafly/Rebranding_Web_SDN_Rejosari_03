@@ -29,18 +29,18 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'judul'          => 'required|string|max:200',
-            'deskripsi'      => 'nullable|string',
-            'tanggal'        => 'nullable|date',
-            'status'         => 'required|in:aktif,nonaktif',
-            'thumbnail'      => 'nullable|' . self::IMG,
+            'judul' => 'required|string|max:200',
+            'deskripsi' => 'nullable|string',
+            'tanggal' => 'nullable|date',
+            'status' => 'required|in:aktif,nonaktif',
+            'thumbnail' => 'nullable|'.self::IMG,
 
-            'foto_baru'         => 'nullable|array',
-            'foto_baru.*'       => self::IMG,
-            'keterangan_baru'   => 'nullable|array',
+            'foto_baru' => 'nullable|array',
+            'foto_baru.*' => self::IMG,
+            'keterangan_baru' => 'nullable|array',
             'keterangan_baru.*' => 'nullable|string|max:255',
-            'urutan_baru'       => 'nullable|array',
-            'urutan_baru.*'     => 'nullable|integer|min:0',
+            'urutan_baru' => 'nullable|array',
+            'urutan_baru.*' => 'nullable|integer|min:0',
         ]);
 
         $newFiles = [];
@@ -88,28 +88,28 @@ class GalleryController extends Controller
         $gallery = Gallery::findOrFail($id);
 
         $validated = $request->validate([
-            'judul'          => 'required|string|max:200',
-            'deskripsi'      => 'nullable|string',
-            'tanggal'        => 'nullable|date',
-            'status'         => 'required|in:aktif,nonaktif',
-            'thumbnail'      => 'nullable|' . self::IMG,
+            'judul' => 'required|string|max:200',
+            'deskripsi' => 'nullable|string',
+            'tanggal' => 'nullable|date',
+            'status' => 'required|in:aktif,nonaktif',
+            'thumbnail' => 'nullable|'.self::IMG,
 
-            'foto_lama'              => 'nullable|array',
+            'foto_lama' => 'nullable|array',
             'foto_lama.*.keterangan' => 'nullable|string|max:255',
-            'foto_lama.*.urutan'     => 'nullable|integer|min:0',
+            'foto_lama.*.urutan' => 'nullable|integer|min:0',
 
-            'foto_ganti'   => 'nullable|array',
+            'foto_ganti' => 'nullable|array',
             'foto_ganti.*' => self::IMG,
 
-            'hapus_foto'   => 'nullable|array',
+            'hapus_foto' => 'nullable|array',
             'hapus_foto.*' => 'integer',
 
-            'foto_baru'         => 'nullable|array',
-            'foto_baru.*'       => self::IMG,
-            'keterangan_baru'   => 'nullable|array',
+            'foto_baru' => 'nullable|array',
+            'foto_baru.*' => self::IMG,
+            'keterangan_baru' => 'nullable|array',
             'keterangan_baru.*' => 'nullable|string|max:255',
-            'urutan_baru'       => 'nullable|array',
-            'urutan_baru.*'     => 'nullable|integer|min:0',
+            'urutan_baru' => 'nullable|array',
+            'urutan_baru.*' => 'nullable|integer|min:0',
         ]);
 
         $filesToDelete = [];
@@ -164,7 +164,7 @@ class GalleryController extends Controller
 
                     $update = [
                         'keterangan' => $row['keterangan'] ?? $foto->keterangan,
-                        'urutan'     => (int) ($row['urutan'] ?? $foto->urutan),
+                        'urutan' => (int) ($row['urutan'] ?? $foto->urutan),
                     ];
 
                     if (isset($ganti[$foto->id])) {
@@ -262,19 +262,19 @@ class GalleryController extends Controller
         Gallery $gallery,
         array &$newFiles
     ): void {
-        $files  = $request->file('foto_baru', []);
-        $ket    = $request->input('keterangan_baru', []);
+        $files = $request->file('foto_baru', []);
+        $ket = $request->input('keterangan_baru', []);
         $urutan = $request->input('urutan_baru', []);
 
         foreach ($files as $i => $file) {
             $gallery->foto()->create([
-                'foto'       => $this->simpanFile(
+                'foto' => $this->simpanFile(
                     $file,
                     'gallery/foto',
                     $newFiles
                 ),
                 'keterangan' => $ket[$i] ?? null,
-                'urutan'     => (int) ($urutan[$i] ?? 0),
+                'urutan' => (int) ($urutan[$i] ?? 0),
             ]);
         }
     }

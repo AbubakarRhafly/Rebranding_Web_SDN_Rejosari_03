@@ -6,8 +6,6 @@
 <style>
     .info-page { max-width: 1060px; margin: 0 auto; color: #263244; }
     .info-page * { min-width: 0; }
-    .info-breadcrumb { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 30px; font-size: 12px; color: #68717c; }
-    .info-breadcrumb a { color: inherit; text-decoration: none; }
     .info-header { text-align: center; margin-bottom: 30px; }
     .info-eyebrow { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--site-red, #a84450); }
     .info-eyebrow::before, .info-eyebrow::after { content: ''; width: 38px; height: 1px; background: #dcbcc1; }
@@ -64,7 +62,6 @@
     .info-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
     @media (max-width: 900px) { .info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .info-pagination { flex-direction: column; align-items: flex-start; } }
     @media (max-width: 560px) {
-        .info-breadcrumb { margin-bottom: 24px; }
         .info-header { margin-bottom: 24px; }
         .info-header p { font-size: 13px; }
         .info-search { flex-wrap: wrap; }
@@ -84,10 +81,6 @@
 
 @section('content')
 <main class="info-page">
-    <nav class="info-breadcrumb" aria-label="Breadcrumb">
-        <a href="{{ url('/') }}">Beranda</a><span aria-hidden="true">›</span><span aria-current="page">Pengumuman & Berita</span>
-    </nav>
-
     <header class="info-header">
         <div class="info-eyebrow">Informasi sekolah</div>
         <h1>Pengumuman & Berita</h1>

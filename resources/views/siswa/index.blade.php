@@ -5,9 +5,6 @@
 <style>
 .siswa-page { color: var(--site-text, #263244); }
 .siswa-page [hidden] { display: none !important; }
-.siswa-breadcrumb { margin-bottom: 20px; font-size: 13px; color: #637083; }
-.siswa-breadcrumb a { color: var(--site-red-dark, #893642); text-decoration: none; }
-.siswa-breadcrumb span { margin: 0 10px; }
 .siswa-hero { padding: 32px; border: 1px solid #ead5d9; border-radius: 20px; background: var(--site-pink, #f5e7e9); }
 .siswa-eyebrow { margin: 0 0 12px; color: var(--site-red-dark, #893642); font-size: 12px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase; }
 .siswa-hero h1 { margin: 0 0 12px; font-size: clamp(28px, 4vw, 40px); line-height: 1.2; }
@@ -58,9 +55,6 @@
         ->unique()->sort()->values();
 @endphp
 <main class="siswa-page" id="siswa-page">
-    <nav class="siswa-breadcrumb" aria-label="Breadcrumb">
-        <a href="{{ url('/') }}">Beranda</a><span aria-hidden="true">/</span><strong aria-current="page">Siswa</strong>
-    </nav>
     <header class="siswa-hero">
         <p class="siswa-eyebrow">SDN Rejosari 03 Semarang</p>
         <h1>Data Siswa</h1>
