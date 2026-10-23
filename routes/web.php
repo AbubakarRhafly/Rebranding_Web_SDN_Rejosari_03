@@ -54,11 +54,21 @@ Route::get('/siswa', [SiswaController::class, 'index'])
 Route::get('/gallery', [GalleryController::class, 'index'])
     ->name('gallery.index');
 
-Route::get('/berita', [BeritaController::class, 'index'])
+Route::get('/beritadanpengumuman', [BeritaController::class, 'index'])
     ->name('berita.index');
+
+Route::redirect('/berita', '/beritadanpengumuman', 301);
+
+Route::get('/berita/{slug}', [BeritaController::class, 'show'])
+    ->name('berita.show');
+
+Route::get('/beritadanpengumuman/{slug}', [BeritaController::class, 'show']);
 
 Route::get('/pengumuman', [PengumumanController::class, 'index'])
     ->name('pengumuman.index');
+
+Route::get('/pengumuman/{id}', [PengumumanController::class, 'show'])
+    ->name('pengumuman.show');
 
 Route::get('/kegiatan-lomba', [KegiatanLombaController::class, 'index'])
     ->name('kegiatan-lomba.index');
@@ -105,15 +115,15 @@ Route::prefix('admin')
             ->name('pengaduan.destroy');
 
         // CRUD
-        Route::resource('guru', AdminGuruController::class);
+        Route::resource('guru', AdminGuruController::class)->except(['show']);
 
-        Route::resource('siswa', AdminSiswaController::class);
+        Route::resource('siswa', AdminSiswaController::class)->except(['show']);
 
-        Route::resource('berita', AdminBeritaController::class);
+        Route::resource('berita', AdminBeritaController::class)->except(['show']);
 
-        Route::resource('pengumuman', AdminPengumumanController::class);
+        Route::resource('pengumuman', AdminPengumumanController::class)->except(['show']);
 
-        Route::resource('gallery', AdminGalleryController::class);
+        Route::resource('gallery', AdminGalleryController::class)->except(['show']);
 
-        Route::resource('kegiatan-lomba', AdminKegiatanLombaController::class);
+        Route::resource('kegiatan-lomba', AdminKegiatanLombaController::class)->except(['show']);
     });

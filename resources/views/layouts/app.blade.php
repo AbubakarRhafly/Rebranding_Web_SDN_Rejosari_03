@@ -751,9 +751,9 @@
                 'type' => 'dropdown',
                 'label' => 'Informasi',
                 'icon' => 'info',
-                'is_active' => request()->is('berita', 'berita/*', 'pengumuman', 'pengumuman/*', 'kegiatan-lomba', 'kegiatan-lomba/*'),
+                'is_active' => request()->is('beritadanpengumuman', 'beritadanpengumuman/*', 'berita', 'berita/*', 'pengumuman', 'pengumuman/*', 'kegiatan-lomba', 'kegiatan-lomba/*'),
                 'children' => [
-                    ['label' => 'Berita & Pengumuman', 'url' => route('berita.index'), 'is_active' => request()->is('berita', 'berita/*', 'pengumuman', 'pengumuman/*')],
+                    ['label' => 'Berita & Pengumuman', 'url' => route('berita.index'), 'is_active' => request()->is('beritadanpengumuman', 'beritadanpengumuman/*', 'berita', 'berita/*', 'pengumuman', 'pengumuman/*')],
                     ['label' => 'Kegiatan & Lomba', 'url' => route('kegiatan-lomba.index'), 'is_active' => request()->is('kegiatan-lomba', 'kegiatan-lomba/*')],
                 ],
             ],
@@ -805,7 +805,15 @@
             } elseif (request()->is('siswa', 'siswa/*')) {
                 $breadcrumbs[] = ['label' => 'Tentang'];
                 $breadcrumbs[] = ['label' => 'Data Siswa'];
-            } elseif (request()->is('berita', 'berita/*', 'pengumuman', 'pengumuman/*')) {
+            } elseif (request()->is('beritadanpengumuman/*', 'berita/*')) {
+                $breadcrumbs[] = ['label' => 'Informasi'];
+                $breadcrumbs[] = ['label' => 'Berita & Pengumuman', 'url' => route('berita.index')];
+                $breadcrumbs[] = ['label' => 'Detail Berita'];
+            } elseif (request()->is('pengumuman/*')) {
+                $breadcrumbs[] = ['label' => 'Informasi'];
+                $breadcrumbs[] = ['label' => 'Berita & Pengumuman', 'url' => route('berita.index').'#pengumuman'];
+                $breadcrumbs[] = ['label' => 'Detail Pengumuman'];
+            } elseif (request()->is('beritadanpengumuman', 'berita', 'pengumuman')) {
                 $breadcrumbs[] = ['label' => 'Informasi'];
                 $breadcrumbs[] = ['label' => 'Berita & Pengumuman'];
             } elseif (request()->is('kegiatan-lomba', 'kegiatan-lomba/*')) {

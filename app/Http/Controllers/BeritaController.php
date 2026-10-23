@@ -51,4 +51,19 @@ class BeritaController extends Controller
 
         return view('berita.index', compact('berita', 'pengumuman', 'q', 'kategori', 'kategoriList'));
     }
+
+    public function show(string $slug)
+    {
+        $berita = Berita::where('slug', $slug)
+            ->where('status', 'published')
+            ->firstOrFail();
+
+        $beritaTerkait = Berita::where('status', 'published')
+            ->where('id', '!=', $berita->id)
+            ->orderByDesc('tanggal_publish')
+            ->limit(4)
+            ->get();
+
+        return view('berita.show', compact('berita', 'beritaTerkait'));
+    }
 }

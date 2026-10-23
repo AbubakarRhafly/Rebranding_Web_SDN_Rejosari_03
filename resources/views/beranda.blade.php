@@ -282,9 +282,9 @@
                         </div>
                         <div class="home-card-content">
                             <p class="home-date">{{ $berita->tanggal_publish?->format('d/m/Y') }}</p>
-                            <h3>{{ $berita->judul }}</h3>
+                            <h3><a href="{{ route('berita.show', $berita->slug) }}" style="color: inherit; text-decoration: none;">{{ $berita->judul }}</a></h3>
                             <p class="home-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($berita->isi ?? ''), 110) }}</p>
-                            <a class="home-link home-card-action" href="{{ route('berita.index', ['q' => $berita->judul]) }}">Baca berita →</a>
+                            <a class="home-link home-card-action" href="{{ route('berita.show', $berita->slug) }}">Baca berita →</a>
                         </div>
                     </article>
                 @empty
@@ -303,8 +303,11 @@
                     @forelse ($pengumumanBeranda as $pengumuman)
                         <article class="home-announcement-item">
                             <p class="home-date">{{ $pengumuman->tanggal_mulai?->format('d/m/Y') }}</p>
-                            <h3>{{ $pengumuman->judul }}</h3>
+                            <h3><a href="{{ route('pengumuman.show', $pengumuman->id) }}" style="color: inherit; text-decoration: none;">{{ $pengumuman->judul }}</a></h3>
                             <p>{{ \Illuminate\Support\Str::limit(strip_tags($pengumuman->isi ?? ''), 95) }}</p>
+                            <div style="margin-top: 6px;">
+                                <a href="{{ route('pengumuman.show', $pengumuman->id) }}" style="color: var(--site-red-dark); font-size: 12.5px; font-weight: 700; text-decoration: none;">Baca pengumuman →</a>
+                            </div>
                         </article>
                     @empty
                         <p class="home-empty" style="margin: 0;">Belum ada pengumuman yang dipublikasikan.</p>

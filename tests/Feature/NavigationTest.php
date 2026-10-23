@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Berita;
+use App\Models\Pengumuman;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,7 +21,8 @@ class NavigationTest extends TestCase
             '/guru' => 200,
             '/siswa' => 200,
             '/gallery' => 200,
-            '/berita' => 200,
+            '/beritadanpengumuman' => 200,
+            '/berita' => 301,
             '/pengumuman' => 302, // sengaja dialihkan ke halaman berita#pengumuman
             '/kegiatan-lomba' => 200,
             '/pengaduan' => 200,
@@ -70,7 +73,7 @@ class NavigationTest extends TestCase
 
     public function test_breadcrumb_renders_on_desktop_pages(): void
     {
-        $response = $this->get('/berita');
+        $response = $this->get('/beritadanpengumuman');
         $response->assertStatus(200);
 
         $response->assertSee('site-breadcrumb');
@@ -147,12 +150,63 @@ class NavigationTest extends TestCase
 
     public function test_page_breadcrumbs_are_not_duplicated(): void
     {
-        $response = $this->get('/berita');
+        $response = $this->get('/beritadanpengumuman');
         $response->assertStatus(200);
         $response->assertDontSee('info-breadcrumb');
 
         $responseSiswa = $this->get('/siswa');
         $responseSiswa->assertStatus(200);
         $responseSiswa->assertDontSee('siswa-breadcrumb');
+    }
+
+    public function test_berita_detail_page_is_accessible(): void
+    {
+        $berita = Berita::create([
+            'judul' => 'Uji Coba Berita Baru',
+            'slug' => 'uji-coba-berita-baru',
+            'isi' => 'Ini adalah konten lengkap dari berita uji coba.',
+            'kategori' => 'Pendidikan',
+            'penulis' => 'Humas Sekolah',
+            'status' => 'published',
+            'tanggal_publish' => now(),
+        ]);
+
+        $response = $this->get(route('berita.show', $berita->slug));
+        $response->assertStatus(200);
+        $response->assertSee('Uji Coba Berita Baru');
+        $response->assertSee('Ini adalah konten lengkap dari berita uji coba.');
+        $response->assertSee('Humas Sekolah');
+        $response->assertSee('Pendidikan');
+    }
+
+    public function test_pengumuman_detail_page_is_accessible(): void
+    {
+        $pengumuman = Pengumuman::create([
+            'judul' => 'Pengumuman Libur Sekolah',
+            'isi' => 'Diberitahukan kepada seluruh siswa bahwa kegiatan KBM diliburkan.',
+            'tanggal_mulai' => now(),
+            'status' => 'published',
+        ]);
+
+        $response = $this->get(route('pengumuman.show', $pengumuman->id));
+        $response->assertStatus(200);
+        $response->assertSee('Pengumuman Libur Sekolah');
+        $response->assertSee('Diberitahukan kepada seluruh siswa');
+    }
+
+    public function test_berita_cards_contain_links_to_detail_pages(): void
+    {
+        $berita = Berita::create([
+            'judul' => 'Prestasi Juara Lomba Matematika',
+            'slug' => 'prestasi-juara-lomba-matematika',
+            'isi' => 'Siswa kami berhasil meraih medali emas.',
+            'status' => 'published',
+            'tanggal_publish' => now(),
+        ]);
+
+        $response = $this->get('/beritadanpengumuman');
+        $response->assertStatus(200);
+        $response->assertSee(route('berita.show', $berita->slug));
+        $response->assertDontSee('<details class="info-detail"', false);
     }
 }
