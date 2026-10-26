@@ -8,26 +8,48 @@
     <title>Galeri Sekolah</title>
 
     <link rel="stylesheet" href="{{ asset('css/galeri.css') }}">
+    
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar">
 
-        <div class="logo">
-            SDN REJOSARI 03
-        </div>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">SDN REJOSARI 03</div>
 
-        <ul class="nav-menu">
-            <li><a href="#">Beranda</a></li>
-            <li><a href="#">Profil</a></li>
-            <li><a href="#">Berita</a></li>
-            <li><a href="#">Galeri</a></li>
-            <li><a href="#">Kontak</a></li>
-        </ul>
+    <ul class="nav-menu">
+        <li>
+            <a href="/">
+                Home <i class="fa-solid fa-house"></i>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                Tentang <i class="fa-solid fa-book-open"></i>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                Information <i class="fa-solid fa-circle-info"></i>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                Galeri <i class="fa-solid fa-image"></i>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                Kontak <i class="fa-solid fa-envelope"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
 
-    </nav>
 
 
     <!-- Header Galeri -->
@@ -195,10 +217,51 @@
 
 
     <!-- Footer -->
-    <footer>
+    <footer class="school-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Menu Utama</h3>
+                <ul class="footer-menu">
+                    <li><a href="/">⌂ Home</a></li>
+                    <li><a href="#">◧ Tentang</a></li>
+                    <li><a href="#">● Informasi</a></li>
+                    <li><a href="#">▣ Galeri</a></li>
+                    <li><a href="#">✉ Kontak</a></li>
+                </ul>
+            </div>
 
-        <p>© 2026 Sekolah Kita</p>
+            <div class="footer-section">
+                <h3>Kontak</h3>
+                <div class="footer-contact">
+                    <p>
+                        Jl. Tirt oyoso VI No.10,<br>
+                        Rejosari, Kec. Semarang Tim.,<br>
+                        Kota Semarang, Jawa Tengah<br>
+                        50125
+                    </p>
+                    <p>0899999999999</p>
+                    <p>Email@gmail.com</p>
+                </div>
+            </div>
 
+            <div class="footer-section">
+                <h3>Jam Kerja</h3>
+                <div class="footer-hours">
+                    <div><span>Senin - Kamis</span><span>07.00 - 14.00</span></div>
+                    <div><span>Jum'at</span><span>07.00 - 11.30</span></div>
+                    <div><span>Sabtu</span><span>07.00 - 12.00</span></div>
+                    <div><span>Minggu</span><span>Tutup</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>Copyright © 2026 SDN REJOSARI 03 All Rights Reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms &amp; Condition</a>
+            </div>
+        </div>
     </footer>
 
     
