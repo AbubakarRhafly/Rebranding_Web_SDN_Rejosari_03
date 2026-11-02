@@ -350,12 +350,12 @@
 @section('content')
 <div class="announcement-page">
     <div class="announcement-back-nav">
-        <a href="{{ route('berita.index') }}#pengumuman" class="announcement-back-btn">
+        <a href="{{ route('pengumuman.index') }}" class="announcement-back-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            Kembali ke Berita & Pengumuman
+            Kembali ke Pengumuman
         </a>
     </div>
 
@@ -393,35 +393,16 @@
                 @endif
             </header>
 
-            @if ($pengumuman->foto)
+            @if ($pengumuman->foto_url)
                 <div class="announcement-cover">
-                    <img src="{{ asset('storage/' . $pengumuman->foto) }}" alt="{{ $pengumuman->judul }}" loading="eager">
+                    <img src="{{ $pengumuman->foto_url }}" alt="{{ $pengumuman->judul }}" loading="eager"
+                         onerror="this.parentElement.style.display='none';">
                 </div>
             @endif
 
             <div class="announcement-body">
                 {!! nl2br(e($pengumuman->isi)) !!}
             </div>
-
-            @if ($pengumuman->lampiran)
-                <div class="announcement-attachment-card">
-                    <div class="announcement-attachment-info">
-                        <div class="announcement-attachment-icon">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                            </svg>
-                        </div>
-                        <div>
-                            <strong style="display: block; font-size: 14px; color: #1e293b;">Dokumen Lampiran Resmi</strong>
-                            <span style="font-size: 12.5px; color: #64748b;">Unduh berkas pengumuman untuk informasi lebih lengkap.</span>
-                        </div>
-                    </div>
-                    <a href="{{ asset('storage/' . $pengumuman->lampiran) }}" target="_blank" rel="noopener noreferrer" class="btn-download-attachment">
-                        Unduh Lampiran ↗
-                    </a>
-                </div>
-            @endif
 
             <div class="announcement-share-section">
                 <span class="announcement-share-label">Bagikan pengumuman ini:</span>
@@ -473,7 +454,7 @@
                 <p style="margin: 0 0 14px; font-size: 13.5px; color: #64748b; line-height: 1.55;">
                     Ikuti kabar kegiatan, prestasi siswa, dan artikel edukatif SDN Rejosari 03.
                 </p>
-                <a href="{{ route('berita.index') }}#berita-sekolah" style="display: inline-flex; align-items: center; gap: 6px; color: var(--site-red-dark); font-weight: 700; font-size: 13.5px; text-decoration: none;">
+                <a href="{{ route('berita.index') }}" style="display: inline-flex; align-items: center; gap: 6px; color: var(--site-red-dark); font-weight: 700; font-size: 13.5px; text-decoration: none;">
                     Lihat semua berita →
                 </a>
             </div>

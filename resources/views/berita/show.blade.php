@@ -340,9 +340,10 @@
                 </div>
             </header>
 
-            @if ($berita->thumbnail)
+            @if ($berita->thumbnail_url)
                 <div class="article-cover">
-                    <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="{{ $berita->judul }}" loading="eager">
+                    <img src="{{ $berita->thumbnail_url }}" alt="{{ $berita->judul }}" loading="eager"
+                         onerror="this.parentElement.style.display='none';">
                 </div>
             @endif
 
@@ -400,7 +401,7 @@
                 <p style="margin: 0 0 14px; font-size: 13.5px; color: #64748b; line-height: 1.55;">
                     Informasi penting dan pengumuman resmi bagi siswa dan wali murid.
                 </p>
-                <a href="{{ route('berita.index') }}#pengumuman" style="display: inline-flex; align-items: center; gap: 6px; color: var(--site-red-dark); font-weight: 700; font-size: 13.5px; text-decoration: none;">
+                <a href="{{ route('pengumuman.index') }}" style="display: inline-flex; align-items: center; gap: 6px; color: var(--site-red-dark); font-weight: 700; font-size: 13.5px; text-decoration: none;">
                     Lihat semua pengumuman →
                 </a>
             </div>

@@ -228,26 +228,34 @@
     .btn-table-edit {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 5px;
-        padding: 6px 12px;
+        width: 78px;
+        height: 34px;
+        box-sizing: border-box;
         background: var(--site-pink, #f5e7e9);
         color: var(--site-red-dark, #893642) !important;
+        border: 1px solid #e2cbd0;
         border-radius: 6px;
         font-size: 13px;
         font-weight: 600;
         text-decoration: none;
-        transition: background 0.15s ease;
+        transition: background 0.15s ease, border-color 0.15s ease;
     }
 
     .btn-table-edit:hover {
         background: #edd5d9;
+        border-color: #dab7bc;
     }
 
     .btn-table-delete {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 5px;
-        padding: 6px 12px;
+        width: 78px;
+        height: 34px;
+        box-sizing: border-box;
         background: #fff1f2;
         color: #be123c !important;
         border: 1px solid #fecdd3;
@@ -256,8 +264,7 @@
         font-weight: 600;
         cursor: pointer;
         font-family: inherit;
-        margin-left: 4px;
-        transition: background 0.15s ease;
+        transition: background 0.15s ease, border-color 0.15s ease;
     }
 
     .btn-table-delete:hover {
@@ -352,12 +359,11 @@
 
                                 <td style="text-align: center;">
                                     <div class="guru-photo-wrap" style="margin: 0 auto;">
-                                        @if ($item->foto)
-                                            <img src="{{ asset('storage/' . $item->foto) }}"
-                                                 alt="Foto {{ $item->nama }}">
-                                        @elseif ($item->foto_awal)
-                                            <img src="{{ asset('storage/' . $item->foto_awal) }}"
-                                                 alt="Foto awal {{ $item->nama }}">
+                                        @if ($item->foto_url)
+                                            <img src="{{ $item->foto_url }}"
+                                                 alt="Foto {{ $item->nama }}"
+                                                 onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='inline-flex';">
+                                            <span class="guru-photo-placeholder" style="display:none;">Tanpa Foto</span>
                                         @else
                                             <span class="guru-photo-placeholder">Tanpa Foto</span>
                                         @endif
@@ -402,30 +408,32 @@
                                 </td>
 
                                 <td class="actions-cell" style="text-align: center;">
-                                    <a href="{{ route('admin.guru.edit', $item->id) }}" class="btn-table-edit" title="Edit Data Guru">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
-                                        Edit
-                                    </a>
-
-                                    <form action="{{ route('admin.guru.destroy', $item->id) }}"
-                                          method="POST"
-                                          style="display: inline; margin: 0;"
-                                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus data guru \'{{ addslashes($item->nama) }}\'?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-table-delete" title="Hapus Data Guru">
+                                    <div class="admin-actions">
+                                        <a href="{{ route('admin.guru.edit', $item->id) }}" class="btn-table-edit btn-action-edit" title="Edit Data Guru">
                                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                                <polyline points="3 6 5 6 21 6"></polyline>
-                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                                <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                             </svg>
-                                            Hapus
-                                        </button>
-                                    </form>
+                                            Edit
+                                        </a>
+
+                                        <form action="{{ route('admin.guru.destroy', $item->id) }}"
+                                              method="POST"
+                                              style="display: inline-flex; margin: 0;"
+                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus data guru \'{{ addslashes($item->nama) }}\'?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-table-delete btn-action-delete" title="Hapus Data Guru">
+                                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                </svg>
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

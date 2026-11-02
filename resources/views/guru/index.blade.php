@@ -150,28 +150,19 @@ $kategori = [
 
             <div class="profil-guru__grid {{ $kode === 'kepala-sekolah' ? 'profil-guru__grid--kepala' : '' }}">
                 @foreach ($kelompokGuru->get($kode) as $item)
-                @php
-                $fotoPath = ltrim((string) $item->foto, '/');
-                $fotoUrl = null;
-
-                if (
-                str_starts_with($fotoPath, 'images/guru/')
-                && !str_contains($fotoPath, '..')
-                && is_file(public_path($fotoPath))
-                ) {
-                $fotoUrl = asset($fotoPath);
-                }
-                @endphp
-
                 <article class="profil-guru__card">
-                    @if ($fotoUrl)
+                    @if ($item->foto_url)
                     <img
                         class="profil-guru__photo"
-                        src="{{ $fotoUrl }}"
+                        src="{{ $item->foto_url }}"
                         alt="Foto {{ $item->nama }}"
                         width="600"
                         height="750"
-                        loading="lazy">
+                        loading="lazy"
+                        onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                    <div class="profil-guru__photo profil-guru__placeholder" style="display:none;">
+                        <span>Foto belum tersedia</span>
+                    </div>
                     @else
                     <div class="profil-guru__photo profil-guru__placeholder">
                         <span>Foto belum tersedia</span>

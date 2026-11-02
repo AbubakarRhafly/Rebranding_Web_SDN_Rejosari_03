@@ -59,9 +59,9 @@
         <p>
             <img
                 id="thumbPreview"
-                src="{{ $gallery->thumbnail ? asset('storage/' . $gallery->thumbnail) : '' }}"
+                src="{{ $gallery->thumbnail_url ?: '' }}"
                 alt="Thumbnail"
-                style="display:{{ $gallery->thumbnail ? 'block' : 'none' }}; width:240px;
+                style="display:{{ $gallery->thumbnail_url ? 'block' : 'none' }}; width:240px;
                        aspect-ratio:4/3; object-fit:cover; border:1px solid #ddd; border-radius:8px;"
             >
         </p>
@@ -70,9 +70,8 @@
             <button
                 type="button"
                 id="thumbRecrop"
-                data-src="{{ $gallery->thumbnail_asli
-                    ? asset('storage/' . $gallery->thumbnail_asli)
-                    : ($gallery->thumbnail ? asset('storage/' . $gallery->thumbnail) : '') }}"                style="display:{{ $gallery->thumbnail ? 'inline-block' : 'none' }};"
+                data-src="{{ $gallery->thumbnail_url ?: '' }}"
+                style="display:{{ $gallery->thumbnail_url ? 'inline-block' : 'none' }};"
             >
                 Crop Ulang Thumbnail
             </button>

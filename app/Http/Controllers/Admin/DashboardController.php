@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use App\Models\Gallery;
 use App\Models\Guru;
-use App\Models\KegiatanLomba;
 use App\Models\Pengaduan;
 use App\Models\Pengumuman;
 use App\Models\Siswa;
@@ -21,7 +20,6 @@ class DashboardController extends Controller
         $jumlahBerita = Berita::count();
         $jumlahPengumuman = Pengumuman::count();
         $jumlahPengaduan = Pengaduan::count();
-        $jumlahKegiatan = KegiatanLomba::count();
 
         return view('admin.dashboard', compact(
             'jumlahGuru',
@@ -29,8 +27,7 @@ class DashboardController extends Controller
             'jumlahGallery',
             'jumlahBerita',
             'jumlahPengumuman',
-            'jumlahPengaduan',
-            'jumlahKegiatan'
+            'jumlahPengaduan'
         ));
     }
 }

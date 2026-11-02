@@ -4,14 +4,12 @@ use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\GuruController as AdminGuruController;
-use App\Http\Controllers\Admin\KegiatanLombaController as AdminKegiatanLombaController;
 use App\Http\Controllers\Admin\PengumumanController as AdminPengumumanController;
 use App\Http\Controllers\Admin\SiswaController as AdminSiswaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\GuruController;
-use App\Http\Controllers\KegiatanLombaController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\SiswaController;
@@ -54,15 +52,12 @@ Route::get('/siswa', [SiswaController::class, 'index'])
 Route::get('/gallery', [GalleryController::class, 'index'])
     ->name('gallery.index');
 
-Route::get('/beritadanpengumuman', [BeritaController::class, 'index'])
+// Informasi (Berita & Pengumuman terpisah)
+Route::get('/berita', [BeritaController::class, 'index'])
     ->name('berita.index');
-
-Route::redirect('/berita', '/beritadanpengumuman', 301);
 
 Route::get('/berita/{slug}', [BeritaController::class, 'show'])
     ->name('berita.show');
-
-Route::get('/beritadanpengumuman/{slug}', [BeritaController::class, 'show']);
 
 Route::get('/pengumuman', [PengumumanController::class, 'index'])
     ->name('pengumuman.index');
@@ -70,8 +65,17 @@ Route::get('/pengumuman', [PengumumanController::class, 'index'])
 Route::get('/pengumuman/{id}', [PengumumanController::class, 'show'])
     ->name('pengumuman.show');
 
-Route::get('/kegiatan-lomba', [KegiatanLombaController::class, 'index'])
-    ->name('kegiatan-lomba.index');
+Route::redirect('/beritadanpengumuman', '/berita', 301);
+Route::get('/beritadanpengumuman/{slug}', fn (string $slug) => redirect()->route('berita.show', $slug, 301));
+
+// Prestasi & Pendaftaran
+Route::get('/prestasi', fn () => redirect()->away('https://sangjuara.semarangkota.go.id/kejuaraan_siswa?tingkat=&sekolah=371&q='))
+    ->name('prestasi.index');
+
+Route::redirect('/kegiatan-lomba', '/prestasi', 301);
+
+Route::get('/pendaftaran', fn () => redirect()->away('https://spmb.semarangkota.go.id/'))
+    ->name('pendaftaran');
 // Pengaduan User
 Route::get('/pengaduan', [PengaduanController::class, 'create'])
     ->name('pengaduan.create');
@@ -80,13 +84,16 @@ Route::post('/pengaduan', [PengaduanController::class, 'store'])
     ->middleware('throttle:3,10')
     ->name('pengaduan.store');
 
-// Login
-Route::get('/login', [LoginController::class, 'showLogin'])
+// Login Admin (Portal Masuk)
+Route::get('/portalmasukadmin', [LoginController::class, 'showLogin'])
     ->name('login');
 
-Route::post('/login', [LoginController::class, 'login'])
+Route::post('/portalmasukadmin', [LoginController::class, 'login'])
     ->middleware('throttle:login')
     ->name('login.store');
+
+Route::get('/portalmasukadmin/captcha-refresh', [LoginController::class, 'refreshCaptcha'])
+    ->name('login.captcha-refresh');
 
 Route::post('/logout', [LoginController::class, 'logout'])
     ->middleware('auth')
@@ -125,5 +132,5 @@ Route::prefix('admin')
 
         Route::resource('gallery', AdminGalleryController::class)->except(['show']);
 
-        Route::resource('kegiatan-lomba', AdminKegiatanLombaController::class)->except(['show']);
+        Route::redirect('kegiatan-lomba', '/admin');
     });

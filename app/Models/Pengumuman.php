@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\StorageFile;
 use Illuminate\Database\Eloquent\Model;
 
 class Pengumuman extends Model
@@ -14,7 +15,6 @@ class Pengumuman extends Model
         'foto',
         'tanggal_mulai',
         'tanggal_selesai',
-        'lampiran',
         'status',
     ];
 
@@ -22,4 +22,12 @@ class Pengumuman extends Model
         'tanggal_mulai' => 'date',
         'tanggal_selesai' => 'date',
     ];
+
+    /**
+     * Get photo URL if the file exists on disk.
+     */
+    public function getFotoUrlAttribute(): ?string
+    {
+        return StorageFile::url($this->foto);
+    }
 }

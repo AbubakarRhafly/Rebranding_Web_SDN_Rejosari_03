@@ -237,38 +237,27 @@
         </div>
     </section>
 
-    <section class="home-section" aria-labelledby="home-guru-title">
-        <header class="home-heading"><p class="home-eyebrow">TENAGA PENDIDIK DAN KEPENDIDIKAN</p><h2 id="home-guru-title">Guru dan Staf Kami</h2></header>
-        <div class="home-teachers">
-            @forelse ($guruBeranda as $guru)
-                <article class="home-person">
-                    <div class="home-media home-portrait">
-                        <span>Foto belum tersedia</span>
-                        @if ($guru->foto && str_starts_with($guru->foto, 'images/guru/') && !str_contains($guru->foto, '..'))
-                            <img src="{{ asset($guru->foto) }}" alt="{{ $guru->nama }}" loading="lazy">
-                        @endif
-                    </div>
-                    <h3>{{ $guru->nama }}</h3><p>{{ $guru->jabatan }}</p>
-                </article>
-            @empty
-                <p>Data guru dan staf belum tersedia.</p>
-            @endforelse
-        </div>
-        <p class="home-center"><a class="home-link" href="{{ route('guru.index') }}">Lihat semua guru dan staf →</a></p>
-    </section>
-
     <section class="home-section home-information" aria-label="Informasi sekolah">
         <div class="home-info-col">
             <header class="home-section-row">
-                <h2>Berita Terbaru</h2>
+                <h2>Berita</h2>
                 <a class="home-link" href="{{ route('berita.index') }}">Semua berita →</a>
             </header>
             <div class="home-news">
                 @forelse ($beritaBeranda as $berita)
                     <article class="home-news-card">
                         <div class="home-media">
-                            @if ($berita->thumbnail)
-                                <img src="{{ asset('storage/'.$berita->thumbnail) }}" alt="{{ $berita->judul }}" loading="lazy">
+                            @if ($berita->thumbnail_url)
+                                <img src="{{ $berita->thumbnail_url }}" alt="{{ $berita->judul }}" loading="lazy"
+                                     onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                <div class="home-media-placeholder" style="display:none;">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                                        <circle cx="9" cy="9" r="2"></circle>
+                                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+                                    </svg>
+                                    <span>SDN Rejosari 03</span>
+                                </div>
                             @else
                                 <div class="home-media-placeholder">
                                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -296,7 +285,7 @@
         <aside class="home-info-col" aria-labelledby="home-announcement-title">
             <header class="home-section-row">
                 <h2 id="home-announcement-title">Pengumuman</h2>
-                <a class="home-link" href="{{ route('berita.index') }}#pengumuman">Semua pengumuman →</a>
+                <a class="home-link" href="{{ route('pengumuman.index') }}">Semua pengumuman →</a>
             </header>
             <div class="home-announcements-card">
                 <div class="home-announcement-list">
@@ -314,10 +303,30 @@
                     @endforelse
                 </div>
                 <div class="home-announcements-footer">
-                    <a class="home-link" href="{{ route('berita.index') }}#pengumuman">Lihat semua pengumuman sekolah →</a>
+                    <a class="home-link" href="{{ route('pengumuman.index') }}">Lihat semua pengumuman sekolah →</a>
                 </div>
             </div>
         </aside>
+    </section>
+
+    <section class="home-section" aria-labelledby="home-guru-title">
+        <header class="home-heading"><p class="home-eyebrow">TENAGA PENDIDIK DAN KEPENDIDIKAN</p><h2 id="home-guru-title">Guru dan Staf Kami</h2></header>
+        <div class="home-teachers">
+            @forelse ($guruBeranda as $guru)
+                <article class="home-person">
+                    <div class="home-media home-portrait">
+                        <span>Foto belum tersedia</span>
+                        @if ($guru->foto_url)
+                            <img src="{{ $guru->foto_url }}" alt="{{ $guru->nama }}" loading="lazy" onerror="this.style.display='none';">
+                        @endif
+                    </div>
+                    <h3>{{ $guru->nama }}</h3><p>{{ $guru->jabatan }}</p>
+                </article>
+            @empty
+                <p>Data guru dan staf belum tersedia.</p>
+            @endforelse
+        </div>
+        <p class="home-center"><a class="home-link" href="{{ route('guru.index') }}">Lihat semua guru dan staf →</a></p>
     </section>
 
     <section class="home-section" aria-labelledby="home-gallery-title">
@@ -326,8 +335,8 @@
             @forelse ($galeriBeranda as $album)
                 <a class="home-album" href="{{ route('gallery.index') }}">
                     <div class="home-media"><span>Foto belum tersedia</span>
-                        @if ($album->thumbnail)
-                            <img src="{{ asset('storage/'.$album->thumbnail) }}" alt="{{ $album->judul }}" loading="lazy">
+                        @if ($album->cover_url)
+                            <img src="{{ $album->cover_url }}" alt="{{ $album->judul }}" loading="lazy" onerror="this.style.display='none';">
                         @endif
                     </div>
                     <h3>{{ $album->judul }}</h3>

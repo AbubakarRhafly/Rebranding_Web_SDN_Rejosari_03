@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pengumuman & Berita | SDN Rejosari 03')
+@section('title', 'Berita & Artikel | SDN Rejosari 03')
 
 @push('styles')
 <style>
@@ -16,7 +16,7 @@
     .info-search__field svg { flex-shrink: 0; color: #68717c; }
     .info-search input[type="search"] { width: 100%; min-height: 44px; border: 0; font: inherit; font-size: 14px; background: transparent; color: #263244; }
     .info-search button { min-height: 44px; border: 0; border-radius: 7px; background: var(--site-red, #a84450); color: white; padding: 0 24px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
-    .info-page a:focus-visible, .info-page button:focus-visible, .info-page summary:focus-visible, .info-page input:focus-visible { outline: 3px solid #893642; outline-offset: 3px; }
+    .info-page a:focus-visible, .info-page button:focus-visible, .info-page input:focus-visible { outline: 3px solid #893642; outline-offset: 3px; }
     .info-search button:hover { background: var(--site-red-dark, #893642); }
     .info-filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 14px 0 12px; }
     .info-filters__label { color: #68717c; font-size: 12px; margin-right: 4px; }
@@ -24,12 +24,11 @@
     .info-chip[aria-current="true"] { background: var(--site-red, #a84450); border-color: var(--site-red, #a84450); color: #fff; }
     .info-result { color: #68717c; font-size: 13px; line-height: 1.7; margin: 14px 0 0; overflow-wrap: anywhere; }
     .info-result a { color: var(--site-red-dark, #893642); margin-left: 10px; }
-    .info-section { margin-top: 38px; scroll-margin-top: 24px; }
-    .info-section + .info-section { border-top: 1px solid #dce0e5; padding-top: 36px; margin-top: 40px; }
+    .info-section { margin-top: 36px; scroll-margin-top: 24px; }
     .info-section__heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 20px; }
-    .info-section h2 { margin: 0 0 6px; font-size: clamp(24px, 3vw, 30px); color: #20252b; letter-spacing: -.7px; }
+    .info-section h2 { margin: 0 0 6px; font-size: clamp(24px, 3vw, 28px); color: #20252b; letter-spacing: -.7px; }
     .info-section__heading p { margin: 0; color: #68717c; font-size: 13px; line-height: 1.6; }
-    .info-count { white-space: nowrap; padding: 7px 10px; border-radius: 6px; color: var(--site-red-dark, #893642); background: var(--site-pink, #f5e7e9); font-size: 12px; }
+    .info-count { white-space: nowrap; padding: 7px 12px; border-radius: 6px; color: var(--site-red-dark, #893642); background: var(--site-pink, #f5e7e9); font-size: 12.5px; font-weight: 700; }
     .info-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: stretch; }
     .info-card { overflow: hidden; padding: 12px; border-radius: 20px; background: #fff; border: 1px solid #e3e5e9; box-shadow: 0 3px 12px rgb(38 50 68 / 2%); display: flex; flex-direction: column; height: 100%; box-sizing: border-box; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
     .info-card:hover { transform: translateY(-2px); border-color: #cbd5e1; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06); }
@@ -69,7 +68,7 @@
         .info-search button { width: 100%; }
         .info-filters__label { flex-basis: 100%; }
         .info-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
-        .info-section { margin-top: 30px; }
+        .info-section { margin-top: 28px; }
         .info-section__heading { align-items: flex-start; }
         .info-card h3 { font-size: 18px; }
         .info-card__meta { font-size: 11px; }
@@ -82,19 +81,19 @@
 @section('content')
 <main class="info-page">
     <header class="info-header">
-        <div class="info-eyebrow">Informasi sekolah</div>
-        <h1>Pengumuman & Berita</h1>
-        <p>Temukan pengumuman penting dan kabar terbaru dari SDN Rejosari 03.</p>
+        <div class="info-eyebrow">Kabar Sekolah</div>
+        <h1>Berita Sekolah</h1>
+        <p>Kegiatan, liputan prestasi, dan kabar terbaru seputar SDN Rejosari 03 Semarang.</p>
     </header>
 
     <form class="info-search" method="GET" action="{{ route('berita.index') }}" role="search">
         <div class="info-search__field">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg>
-            <label class="info-sr-only" for="info-query">Cari pengumuman dan berita</label>
-            <input id="info-query" type="search" name="q" maxlength="150" value="{{ $q }}" placeholder="Cari judul atau isi informasi…">
+            <label class="info-sr-only" for="info-query">Cari berita sekolah</label>
+            <input id="info-query" type="search" name="q" maxlength="150" value="{{ $q }}" placeholder="Cari judul atau isi berita…">
         </div>
         @if ($kategori !== '') <input type="hidden" name="kategori" value="{{ $kategori }}"> @endif
-        <button type="submit">Cari informasi</button>
+        <button type="submit">Cari berita</button>
     </form>
 
     <nav class="info-filters" aria-label="Filter kategori berita">
@@ -108,38 +107,45 @@
     @if ($q !== '' || $kategori !== '')
         <p class="info-result">
             @if ($q !== '') Hasil pencarian “{{ $q }}”. @endif
-            @if ($kategori !== '') Kategori berita: {{ $kategori }}. @endif
-            {{ $pengumuman->total() }} pengumuman dan {{ $berita->total() }} berita ditemukan.
+            @if ($kategori !== '') Kategori: {{ $kategori }}. @endif
+            {{ $berita->total() }} berita ditemukan.
             <a href="{{ route('berita.index') }}">Reset pencarian</a>
         </p>
     @endif
 
-    @foreach ([['id' => 'pengumuman', 'judul' => 'Pengumuman', 'deskripsi' => 'Informasi penting untuk siswa dan orang tua.', 'data' => $pengumuman, 'jenis' => 'pengumuman'], ['id' => 'berita-sekolah', 'judul' => 'Berita Sekolah', 'deskripsi' => 'Kegiatan, prestasi, dan cerita dari sekolah kita.', 'data' => $berita, 'jenis' => 'berita']] as $bagian)
-        <section id="{{ $bagian['id'] }}" class="info-section" aria-labelledby="judul-{{ $bagian['id'] }}">
-            <div class="info-section__heading">
-                <div><h2 id="judul-{{ $bagian['id'] }}">{{ $bagian['judul'] }}</h2><p>{{ $bagian['deskripsi'] }}</p></div>
-                <span class="info-count">{{ $bagian['data']->total() }} {{ $bagian['jenis'] }}</span>
+    <section class="info-section" aria-labelledby="judul-daftar-berita">
+        <div class="info-section__heading">
+            <div>
+                <h2 id="judul-daftar-berita">Daftar Berita</h2>
+                <p>Artikel dan kabar terkini kegiatan sekolah.</p>
             </div>
-            @if ($bagian['data']->count())
-                <div class="info-grid">
-                    @foreach ($bagian['data'] as $item)
-                        @include('berita.partials.card', ['item' => $item, 'jenis' => $bagian['jenis']])
-                    @endforeach
-                </div>
-            @else
-                <div class="info-empty">
-                    @if ($bagian['data']->total() > 0)
-                        <h3>Halaman ini tidak berisi data</h3><p>Silakan kembali ke halaman pertama.</p>
-                        <a href="{{ $bagian['data']->url(1) }}">Ke halaman pertama</a>
-                    @elseif ($q !== '' || ($bagian['jenis'] === 'berita' && $kategori !== ''))
-                        <h3>{{ $bagian['judul'] }} tidak ditemukan</h3><p>Coba kata kunci lain atau reset pencarian.</p>
-                    @else
-                        <h3>Belum ada {{ strtolower($bagian['judul']) }}</h3><p>Informasi yang sudah diterbitkan akan tampil di sini.</p>
-                    @endif
-                </div>
-            @endif
-            @include('berita.partials.pagination', ['paginator' => $bagian['data'], 'label' => $bagian['jenis']])
-        </section>
-    @endforeach
+            <span class="info-count">{{ $berita->total() }} berita</span>
+        </div>
+
+        @if ($berita->count())
+            <div class="info-grid">
+                @foreach ($berita as $item)
+                    @include('berita.partials.card', ['item' => $item, 'jenis' => 'berita'])
+                @endforeach
+            </div>
+        @else
+            <div class="info-empty">
+                @if ($berita->total() > 0)
+                    <h3>Halaman ini tidak berisi data</h3>
+                    <p>Silakan kembali ke halaman pertama.</p>
+                    <a href="{{ $berita->url(1) }}">Ke halaman pertama</a>
+                @elseif ($q !== '' || $kategori !== '')
+                    <h3>Berita tidak ditemukan</h3>
+                    <p>Coba gunakan kata kunci atau filter kategori lain.</p>
+                    <a href="{{ route('berita.index') }}">Reset pencarian</a>
+                @else
+                    <h3>Belum ada berita</h3>
+                    <p>Berita yang sudah diterbitkan akan tampil di sini.</p>
+                @endif
+            </div>
+        @endif
+
+        @include('berita.partials.pagination', ['paginator' => $berita, 'label' => 'berita'])
+    </section>
 </main>
 @endsection

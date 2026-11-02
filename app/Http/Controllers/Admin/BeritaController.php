@@ -76,8 +76,13 @@ class BeritaController extends Controller
         $validated['slug'] = $validated['slug']
             ?: Str::slug($validated['judul']);
 
-        if ($request->hasFile('thumbnail')) {
-            if ($berita->thumbnail) {
+        if ($request->boolean('hapus_thumbnail')) {
+            if ($berita->thumbnail && Storage::disk('public')->exists($berita->thumbnail)) {
+                Storage::disk('public')->delete($berita->thumbnail);
+            }
+            $validated['thumbnail'] = null;
+        } elseif ($request->hasFile('thumbnail')) {
+            if ($berita->thumbnail && Storage::disk('public')->exists($berita->thumbnail)) {
                 Storage::disk('public')->delete($berita->thumbnail);
             }
 

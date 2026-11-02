@@ -25,10 +25,8 @@
             <article class="sg-album">
                 <div class="sg-cover">
                     <span>Foto belum tersedia</span>
-                    @if ($item->thumbnail)
-                        <img src="{{ asset('storage/'.$item->thumbnail) }}" alt="Sampul {{ $item->judul }}" loading="lazy">
-                    @elseif ($item->foto->first()?->foto)
-                        <img src="{{ asset('storage/'.$item->foto->first()->foto) }}" alt="Sampul {{ $item->judul }}" loading="lazy">
+                    @if ($item->cover_url)
+                        <img src="{{ $item->cover_url }}" alt="Sampul {{ $item->judul }}" loading="lazy" onerror="this.style.display='none';">
                     @endif
                 </div>
                 <div class="sg-info">
@@ -40,8 +38,8 @@
                 </div>
                 <template class="sg-data">
                     @foreach ($item->foto->sortBy('urutan') as $foto)
-                        @if ($foto->foto)
-                            <span data-src="{{ asset('storage/'.$foto->foto) }}" data-caption="{{ $foto->keterangan }}"></span>
+                        @if ($foto->foto_url)
+                            <span data-src="{{ $foto->foto_url }}" data-caption="{{ $foto->keterangan }}"></span>
                         @endif
                     @endforeach
                 </template>

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Berita;
 use App\Models\Pengumuman;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,11 +22,16 @@ class NavigationTest extends TestCase
             '/guru' => 200,
             '/siswa' => 200,
             '/gallery' => 200,
-            '/beritadanpengumuman' => 200,
-            '/berita' => 301,
-            '/pengumuman' => 302, // sengaja dialihkan ke halaman berita#pengumuman
-            '/kegiatan-lomba' => 200,
+            '/berita' => 200,
+            '/pengumuman' => 200,
+            '/beritadanpengumuman' => 301,
+            '/prestasi' => 302,
+            '/kegiatan-lomba' => 301,
+            '/pendaftaran' => 302,
             '/pengaduan' => 200,
+            '/portalmasukadmin' => 200,
+            '/login' => 404,
+            '/admin' => 404,
         ];
 
         foreach ($routes as $route => $expectedStatus) {
@@ -45,6 +51,7 @@ class NavigationTest extends TestCase
         $response->assertSee('Informasi');
         $response->assertSee('Galeri');
         $response->assertSee('Pengaduan');
+        $response->assertSee('Pendaftaran');
 
         // Check mobile drawer markup and aligned menus
         $response->assertSee('mobile-nav-drawer');
@@ -55,8 +62,9 @@ class NavigationTest extends TestCase
         $response->assertSee('Kontak');
         $response->assertSee('Guru &amp; Tenaga Kependidikan', false);
         $response->assertSee('Data Siswa');
-        $response->assertSee('Berita &amp; Pengumuman', false);
-        $response->assertSee('Kegiatan &amp; Lomba', false);
+        $response->assertSee('Prestasi');
+        $response->assertSee('Berita');
+        $response->assertSee('Pengumuman');
     }
 
     public function test_kontak_page_contains_required_information_and_faq(): void
@@ -73,12 +81,12 @@ class NavigationTest extends TestCase
 
     public function test_breadcrumb_renders_on_desktop_pages(): void
     {
-        $response = $this->get('/beritadanpengumuman');
+        $response = $this->get('/berita');
         $response->assertStatus(200);
 
         $response->assertSee('site-breadcrumb');
         $response->assertSee('Beranda');
-        $response->assertSee('Berita &amp; Pengumuman', false);
+        $response->assertSee('Berita');
     }
 
     public function test_pengaduan_form_stores_kategori_keperluan(): void
@@ -150,7 +158,7 @@ class NavigationTest extends TestCase
 
     public function test_page_breadcrumbs_are_not_duplicated(): void
     {
-        $response = $this->get('/beritadanpengumuman');
+        $response = $this->get('/berita');
         $response->assertStatus(200);
         $response->assertDontSee('info-breadcrumb');
 
@@ -204,9 +212,31 @@ class NavigationTest extends TestCase
             'tanggal_publish' => now(),
         ]);
 
-        $response = $this->get('/beritadanpengumuman');
+        $response = $this->get('/berita');
         $response->assertStatus(200);
         $response->assertSee(route('berita.show', $berita->slug));
         $response->assertDontSee('<details class="info-detail"', false);
+    }
+
+    public function test_prestasi_and_pendaftaran_redirect_to_external_portals(): void
+    {
+        $responsePrestasi = $this->get('/prestasi');
+        $responsePrestasi->assertRedirect('https://sangjuara.semarangkota.go.id/kejuaraan_siswa?tingkat=&sekolah=371&q=');
+
+        $responsePendaftaran = $this->get('/pendaftaran');
+        $responsePendaftaran->assertRedirect('https://spmb.semarangkota.go.id/');
+    }
+
+    public function test_admin_navigation_and_dashboard_do_not_contain_kegiatan_lomba(): void
+    {
+        $admin = User::factory()->create();
+
+        $response = $this->actingAs($admin)->get('/admin');
+        $response->assertStatus(200);
+        $response->assertDontSee('Kelola Kegiatan & Lomba');
+        $response->assertDontSee('admin.kegiatan-lomba.index');
+
+        $redirectResponse = $this->actingAs($admin)->get('/admin/kegiatan-lomba');
+        $redirectResponse->assertRedirect('/admin');
     }
 }

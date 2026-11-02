@@ -720,7 +720,7 @@
 
     @stack('styles')
     @if (request()->is('admin', 'admin/*'))
-        <link rel="stylesheet" href="{{ asset('css/admin-panel.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/admin-panel.css') }}?v={{ file_exists(public_path('css/admin-panel.css')) ? filemtime(public_path('css/admin-panel.css')) : '1.1' }}">
     @endif
 </head>
 
@@ -745,16 +745,17 @@
                     ['label' => 'Kontak', 'url' => route('profil.kontak'), 'is_active' => request()->is('kontak')],
                     ['label' => 'Guru & Tenaga Kependidikan', 'url' => route('guru.index'), 'is_active' => request()->is('guru', 'guru/*')],
                     ['label' => 'Data Siswa', 'url' => route('siswa.index'), 'is_active' => request()->is('siswa', 'siswa/*')],
+                    ['label' => 'Prestasi', 'url' => 'https://sangjuara.semarangkota.go.id/kejuaraan_siswa?tingkat=&sekolah=371&q=', 'is_active' => false, 'target' => '_blank'],
                 ],
             ],
             [
                 'type' => 'dropdown',
                 'label' => 'Informasi',
                 'icon' => 'info',
-                'is_active' => request()->is('beritadanpengumuman', 'beritadanpengumuman/*', 'berita', 'berita/*', 'pengumuman', 'pengumuman/*', 'kegiatan-lomba', 'kegiatan-lomba/*'),
+                'is_active' => request()->is('berita', 'berita/*', 'pengumuman', 'pengumuman/*'),
                 'children' => [
-                    ['label' => 'Berita & Pengumuman', 'url' => route('berita.index'), 'is_active' => request()->is('beritadanpengumuman', 'beritadanpengumuman/*', 'berita', 'berita/*', 'pengumuman', 'pengumuman/*')],
-                    ['label' => 'Kegiatan & Lomba', 'url' => route('kegiatan-lomba.index'), 'is_active' => request()->is('kegiatan-lomba', 'kegiatan-lomba/*')],
+                    ['label' => 'Berita', 'url' => route('berita.index'), 'is_active' => request()->is('berita', 'berita/*')],
+                    ['label' => 'Pengumuman', 'url' => route('pengumuman.index'), 'is_active' => request()->is('pengumuman', 'pengumuman/*')],
                 ],
             ],
             [
@@ -771,6 +772,14 @@
                 'icon' => 'mail',
                 'is_active' => request()->is('pengaduan', 'pengaduan/*'),
             ],
+            [
+                'type' => 'link',
+                'label' => 'Pendaftaran',
+                'url' => 'https://spmb.semarangkota.go.id/',
+                'icon' => 'user-plus',
+                'is_active' => false,
+                'target' => '_blank',
+            ],
         ];
 
         $footerMenu = [
@@ -780,9 +789,11 @@
             ['label' => 'Kontak & Lokasi', 'url' => route('profil.kontak')],
             ['label' => 'Guru & Staf (GTK)', 'url' => route('guru.index')],
             ['label' => 'Data Siswa', 'url' => route('siswa.index')],
+            ['label' => 'Prestasi', 'url' => 'https://sangjuara.semarangkota.go.id/kejuaraan_siswa?tingkat=&sekolah=371&q=', 'target' => '_blank'],
+            ['label' => 'Pendaftaran (SPMB)', 'url' => 'https://spmb.semarangkota.go.id/', 'target' => '_blank'],
+            ['label' => 'Berita Sekolah', 'url' => route('berita.index')],
+            ['label' => 'Pengumuman Resmi', 'url' => route('pengumuman.index')],
             ['label' => 'Galeri Foto', 'url' => route('gallery.index')],
-            ['label' => 'Berita & Pengumuman', 'url' => route('berita.index')],
-            ['label' => 'Kegiatan Lomba', 'url' => route('kegiatan-lomba.index')],
             ['label' => 'Layanan Pengaduan', 'url' => route('pengaduan.create')],
         ];
 
@@ -805,20 +816,20 @@
             } elseif (request()->is('siswa', 'siswa/*')) {
                 $breadcrumbs[] = ['label' => 'Tentang'];
                 $breadcrumbs[] = ['label' => 'Data Siswa'];
-            } elseif (request()->is('beritadanpengumuman/*', 'berita/*')) {
+            } elseif (request()->is('berita/*')) {
                 $breadcrumbs[] = ['label' => 'Informasi'];
-                $breadcrumbs[] = ['label' => 'Berita & Pengumuman', 'url' => route('berita.index')];
+                $breadcrumbs[] = ['label' => 'Berita', 'url' => route('berita.index')];
                 $breadcrumbs[] = ['label' => 'Detail Berita'];
+            } elseif (request()->is('berita')) {
+                $breadcrumbs[] = ['label' => 'Informasi'];
+                $breadcrumbs[] = ['label' => 'Berita'];
             } elseif (request()->is('pengumuman/*')) {
                 $breadcrumbs[] = ['label' => 'Informasi'];
-                $breadcrumbs[] = ['label' => 'Berita & Pengumuman', 'url' => route('berita.index').'#pengumuman'];
+                $breadcrumbs[] = ['label' => 'Pengumuman', 'url' => route('pengumuman.index')];
                 $breadcrumbs[] = ['label' => 'Detail Pengumuman'];
-            } elseif (request()->is('beritadanpengumuman', 'berita', 'pengumuman')) {
+            } elseif (request()->is('pengumuman')) {
                 $breadcrumbs[] = ['label' => 'Informasi'];
-                $breadcrumbs[] = ['label' => 'Berita & Pengumuman'];
-            } elseif (request()->is('kegiatan-lomba', 'kegiatan-lomba/*')) {
-                $breadcrumbs[] = ['label' => 'Informasi'];
-                $breadcrumbs[] = ['label' => 'Kegiatan & Lomba'];
+                $breadcrumbs[] = ['label' => 'Pengumuman'];
             } elseif (request()->is('gallery', 'gallery/*')) {
                 $breadcrumbs[] = ['label' => 'Galeri Foto'];
             } elseif (request()->is('pengaduan', 'pengaduan/*')) {
@@ -839,6 +850,7 @@
             'info' => '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>',
             'photo' => '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>',
             'mail' => '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>',
+            'user-plus' => '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>',
         ];
     @endphp
 
@@ -852,7 +864,7 @@
     </header>
     <nav class="admin-navigation" aria-label="Navigasi admin">
         <a href="{{ route('admin.dashboard') }}" @if(request()->routeIs('admin.dashboard')) aria-current="page" @endif>Dashboard</a>
-        @foreach (['guru' => 'Guru & Staf', 'siswa' => 'Siswa', 'berita' => 'Berita', 'pengumuman' => 'Pengumuman', 'gallery' => 'Galeri', 'kegiatan-lomba' => 'Kegiatan Lomba', 'pengaduan' => 'Pengaduan'] as $resource => $label)
+        @foreach (['guru' => 'Guru & Staf', 'siswa' => 'Siswa', 'berita' => 'Berita', 'pengumuman' => 'Pengumuman', 'gallery' => 'Galeri', 'pengaduan' => 'Pengaduan'] as $resource => $label)
             <a href="{{ route('admin.'.$resource.'.index') }}" @if(request()->routeIs('admin.'.$resource.'.*')) aria-current="page" @endif>{{ $label }}</a>
         @endforeach
     </nav>
@@ -869,7 +881,8 @@
                     @if ($item['type'] === 'link')
                         <a href="{{ $item['url'] }}"
                            class="site-nav__link {{ $item['is_active'] ? 'is-active' : '' }}"
-                           @if ($item['is_active']) aria-current="page" @endif>
+                           @if ($item['is_active']) aria-current="page" @endif
+                           @if (!empty($item['target'])) target="{{ $item['target'] }}" rel="noopener noreferrer" @endif>
                             {{ $item['label'] }}
                         </a>
                     @elseif ($item['type'] === 'dropdown')
@@ -888,7 +901,8 @@
                                     <a href="{{ $child['url'] }}"
                                        role="menuitem"
                                        class="{{ $child['is_active'] ? 'is-active' : '' }}"
-                                       @if ($child['is_active']) aria-current="page" @endif>
+                                       @if ($child['is_active']) aria-current="page" @endif
+                                       @if (!empty($child['target'])) target="{{ $child['target'] }}" rel="noopener noreferrer" @endif>
                                         {{ $child['label'] }}
                                     </a>
                                 @endforeach
@@ -939,7 +953,8 @@
                         <li class="mobile-drawer__item">
                             <a href="{{ $item['url'] }}"
                                class="mobile-drawer__link {{ $item['is_active'] ? 'is-active' : '' }}"
-                               @if ($item['is_active']) aria-current="page" @endif>
+                               @if ($item['is_active']) aria-current="page" @endif
+                               @if (!empty($item['target'])) target="{{ $item['target'] }}" rel="noopener noreferrer" @endif>
                                 <span class="mobile-drawer__icon">{!! $icons[$item['icon']] !!}</span>
                                 <span class="mobile-drawer__text">{{ $item['label'] }}</span>
                             </a>
@@ -961,7 +976,8 @@
                                         <li>
                                             <a href="{{ $child['url'] }}"
                                                class="mobile-drawer__submenu-link {{ $child['is_active'] ? 'is-active' : '' }}"
-                                               @if ($child['is_active']) aria-current="page" @endif>
+                                               @if ($child['is_active']) aria-current="page" @endif
+                                               @if (!empty($child['target'])) target="{{ $child['target'] }}" rel="noopener noreferrer" @endif>
                                                 {{ $child['label'] }}
                                             </a>
                                         </li>
@@ -1024,7 +1040,7 @@
                 <ul class="site-footer__menu">
                     @foreach ($footerMenu as $menu)
                         <li>
-                            <a href="{{ $menu['url'] }}">
+                            <a href="{{ $menu['url'] }}" @if (!empty($menu['target'])) target="{{ $menu['target'] }}" rel="noopener noreferrer" @endif>
                                 {{ $menu['label'] }}
                             </a>
                         </li>

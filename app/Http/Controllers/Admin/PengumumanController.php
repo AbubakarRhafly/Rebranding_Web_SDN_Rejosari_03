@@ -34,8 +34,6 @@ class PengumumanController extends Controller
 
             'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
 
-            'lampiran' => 'nullable|file|max:5120',
-
             'status' => 'required|in:draft,published',
         ]);
 
@@ -46,16 +44,6 @@ class PengumumanController extends Controller
                 $request
                     ->file('foto')
                     ->store('pengumuman/foto', 'public');
-
-        }
-
-        // Simpan lampiran
-        if ($request->hasFile('lampiran')) {
-
-            $validated['lampiran'] =
-                $request
-                    ->file('lampiran')
-                    ->store('pengumuman/lampiran', 'public');
 
         }
 
@@ -96,47 +84,23 @@ class PengumumanController extends Controller
 
             'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
 
-            'lampiran' => 'nullable|file|max:5120',
-
             'status' => 'required|in:draft,published',
         ]);
 
-        // Jika upload foto baru
-        if ($request->hasFile('foto')) {
-
-            // Hapus foto lama
-            if ($pengumuman->foto) {
-
-                Storage::disk('public')
-                    ->delete($pengumuman->foto);
-
+        // Foto: hapus atau ganti
+        if ($request->boolean('hapus_foto')) {
+            if ($pengumuman->foto && Storage::disk('public')->exists($pengumuman->foto)) {
+                Storage::disk('public')->delete($pengumuman->foto);
+            }
+            $validated['foto'] = null;
+        } elseif ($request->hasFile('foto')) {
+            if ($pengumuman->foto && Storage::disk('public')->exists($pengumuman->foto)) {
+                Storage::disk('public')->delete($pengumuman->foto);
             }
 
-            // Simpan foto baru
-            $validated['foto'] =
-                $request
-                    ->file('foto')
-                    ->store('pengumuman/foto', 'public');
-
-        }
-
-        // Jika upload lampiran baru
-        if ($request->hasFile('lampiran')) {
-
-            // Hapus lampiran lama
-            if ($pengumuman->lampiran) {
-
-                Storage::disk('public')
-                    ->delete($pengumuman->lampiran);
-
-            }
-
-            // Simpan lampiran baru
-            $validated['lampiran'] =
-                $request
-                    ->file('lampiran')
-                    ->store('pengumuman/lampiran', 'public');
-
+            $validated['foto'] = $request
+                ->file('foto')
+                ->store('pengumuman/foto', 'public');
         }
 
         $pengumuman->update($validated);
@@ -156,18 +120,7 @@ class PengumumanController extends Controller
 
         // Hapus foto
         if ($pengumuman->foto) {
-
-            Storage::disk('public')
-                ->delete($pengumuman->foto);
-
-        }
-
-        // Hapus lampiran
-        if ($pengumuman->lampiran) {
-
-            Storage::disk('public')
-                ->delete($pengumuman->lampiran);
-
+            Storage::disk('public')->delete($pengumuman->foto);
         }
 
         $pengumuman->delete();

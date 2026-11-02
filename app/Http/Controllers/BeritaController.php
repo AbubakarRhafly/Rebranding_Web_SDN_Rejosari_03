@@ -3,18 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
-use App\Models\Pengumuman;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class BeritaController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $filters = $request->validate([
             'q' => ['nullable', 'string', 'max:150'],
             'kategori' => ['nullable', 'string', 'max:100'],
-            'berita_page' => ['nullable', 'integer', 'min:1'],
-            'pengumuman_page' => ['nullable', 'integer', 'min:1'],
+            'page' => ['nullable', 'integer', 'min:1'],
         ]);
 
         $q = trim($filters['q'] ?? '');
@@ -23,33 +22,25 @@ class BeritaController extends Controller
             ->whereNotNull('kategori')->where('kategori', '!=', '')
             ->distinct()->orderBy('kategori')->pluck('kategori');
 
-        $beritaQuery = Berita::where('status', 'published');
-        $pengumumanQuery = Pengumuman::where('status', 'published');
+        $query = Berita::where('status', 'published');
 
         if ($q !== '') {
-            foreach ([$beritaQuery, $pengumumanQuery] as $query) {
-                $query->where(function ($search) use ($q) {
-                    $search->where('judul', 'like', '%'.$q.'%')
-                        ->orWhere('isi', 'like', '%'.$q.'%');
-                });
-            }
+            $query->where(function ($search) use ($q) {
+                $search->where('judul', 'like', '%'.$q.'%')
+                    ->orWhere('isi', 'like', '%'.$q.'%');
+            });
         }
 
         if ($kategori !== '') {
-            $beritaQuery->where('kategori', $kategori);
+            $query->where('kategori', $kategori);
         }
 
         $queryParams = array_filter(['q' => $q, 'kategori' => $kategori], fn ($value) => $value !== '');
-        $berita = $beritaQuery->orderByDesc('tanggal_publish')->orderByDesc('id')
-            ->paginate(6, ['*'], 'berita_page')
-            ->appends($queryParams + ['pengumuman_page' => $filters['pengumuman_page'] ?? 1])
-            ->fragment('berita-sekolah');
-        $pengumuman = $pengumumanQuery->orderByDesc('tanggal_mulai')->orderByDesc('id')
-            ->paginate(6, ['*'], 'pengumuman_page')
-            ->appends($queryParams + ['berita_page' => $filters['berita_page'] ?? 1])
-            ->fragment('pengumuman');
+        $berita = $query->orderByDesc('tanggal_publish')->orderByDesc('id')
+            ->paginate(6)
+            ->appends($queryParams);
 
-        return view('berita.index', compact('berita', 'pengumuman', 'q', 'kategori', 'kategoriList'));
+        return view('berita.index', compact('berita', 'q', 'kategori', 'kategoriList'));
     }
 
     public function show(string $slug)

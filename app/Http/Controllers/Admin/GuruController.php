@@ -101,41 +101,39 @@ class GuruController extends Controller
         ]);
 
         /*
-         * Jika admin upload foto baru
+         * Hapus foto jika diminta
          */
-        if ($request->hasFile('foto_awal')) {
-
-            /*
-             * Hapus foto awal lama
-             */
-            if ($guru->foto_awal) {
+        if ($request->boolean('hapus_foto')) {
+            if ($guru->foto_awal && Storage::disk('public')->exists($guru->foto_awal)) {
                 Storage::disk('public')->delete($guru->foto_awal);
             }
-
-            /*
-             * Simpan foto awal baru
-             */
-            $validated['foto_awal'] =
-                $request->file('foto_awal')->store('guru/asli', 'public');
-        }
-
-        /*
-         * Jika ada hasil crop baru
-         */
-        if ($request->hasFile('foto')) {
-
-            /*
-             * Hapus hasil crop lama
-             */
-            if ($guru->foto) {
+            if ($guru->foto && Storage::disk('public')->exists($guru->foto)) {
                 Storage::disk('public')->delete($guru->foto);
+            }
+            $validated['foto_awal'] = null;
+            $validated['foto'] = null;
+        } else {
+            /*
+             * Jika admin upload foto baru
+             */
+            if ($request->hasFile('foto_awal')) {
+                if ($guru->foto_awal && Storage::disk('public')->exists($guru->foto_awal)) {
+                    Storage::disk('public')->delete($guru->foto_awal);
+                }
+                $validated['foto_awal'] =
+                    $request->file('foto_awal')->store('guru/asli', 'public');
             }
 
             /*
-             * Simpan hasil crop baru
+             * Jika ada hasil crop baru
              */
-            $validated['foto'] =
-                $request->file('foto')->store('guru/crop', 'public');
+            if ($request->hasFile('foto')) {
+                if ($guru->foto && Storage::disk('public')->exists($guru->foto)) {
+                    Storage::disk('public')->delete($guru->foto);
+                }
+                $validated['foto'] =
+                    $request->file('foto')->store('guru/crop', 'public');
+            }
         }
 
         $guru->update($validated);

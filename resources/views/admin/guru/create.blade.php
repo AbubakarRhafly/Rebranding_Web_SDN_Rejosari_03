@@ -441,6 +441,11 @@
                             Hapus Pilihan Foto
                         </button>
                     </div>
+
+                    <div style="margin-top: 14px; padding: 12px 16px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; font-size: 13px; color: #1e40af; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 18px; line-height: 1;">ℹ️</span>
+                        <span><strong>Konfirmasi Simpan:</strong> Foto guru (hasil crop 3:4) di atas telah siap. Pastikan posisi sudah pas, lalu klik tombol <strong>Simpan Guru</strong> di bagian bawah untuk menyimpan.</span>
+                    </div>
                 </div>
             </div>
 

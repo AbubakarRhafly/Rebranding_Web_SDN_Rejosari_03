@@ -419,6 +419,19 @@
                 Upload / Ganti Foto Guru
             </div>
 
+            @if ($guru->foto_url)
+                <div style="margin-bottom: 16px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; gap: 16px;">
+                    <img src="{{ $guru->foto_url }}" alt="Foto {{ $guru->nama }}" style="width: 60px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1;" onerror="this.parentElement.style.display='none';">
+                    <div>
+                        <strong style="display: block; font-size: 13.5px; color: #1e293b;">Foto Guru Saat Ini</strong>
+                        <label style="font-weight: normal; color: #dc2626; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; margin-top: 6px;">
+                            <input type="checkbox" name="hapus_foto" value="1">
+                            <span>Hapus foto guru ini (kembalikan ke Tanpa Foto)</span>
+                        </label>
+                    </div>
+                </div>
+            @endif
+
             <div class="upload-zone-box">
                 <label style="display:block;font-size:14px;font-weight:700;color:#334155;margin-bottom:8px;">
                     Pilih File Foto Baru
@@ -426,7 +439,7 @@
                 <div class="upload-action-row">
                     <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/webp" style="margin-top:0;">
 
-                    @if ($guru->foto_awal)
+                    @if ($guru->foto_awal_url)
                         <button type="button" id="recropButton" class="btn-recrop-old">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14"></path><path d="M18 22V8a2 2 0 0 0-2-2H2"></path></svg>
                             Crop Ulang dari Foto Awal yang Ada
@@ -477,6 +490,11 @@
                         <button type="button" id="btnCancelNewPhoto" class="btn-cancel-new-photo">
                             Batal Gunakan Foto Baru Ini
                         </button>
+                    </div>
+
+                    <div style="margin-top: 14px; padding: 12px 16px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; font-size: 13px; color: #1e40af; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 18px; line-height: 1;">ℹ️</span>
+                        <span><strong>Konfirmasi Simpan:</strong> Foto baru (hasil crop 3:4) di atas telah siap. Pastikan posisi sudah pas, lalu klik tombol <strong>Simpan Perubahan</strong> di bagian bawah untuk menyimpan.</span>
                     </div>
                 </div>
             </div>
@@ -661,8 +679,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // =================================================
     if (recropButton) {
         recropButton.addEventListener('click', function () {
-            @if ($guru->foto_awal)
-                const existingFotoAwalUrl = "{{ asset('storage/' . $guru->foto_awal) }}";
+            @if ($guru->foto_awal_url)
+                const existingFotoAwalUrl = "{{ $guru->foto_awal_url }}";
                 currentRawImageSource = existingFotoAwalUrl;
                 previewFotoAwal.src = existingFotoAwalUrl;
                 livePreviewContainer.style.display = 'block';

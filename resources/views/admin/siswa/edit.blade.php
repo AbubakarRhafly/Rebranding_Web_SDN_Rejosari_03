@@ -81,10 +81,9 @@
             <br>
 
 
-            @if ($siswa->foto)
-
+            @if ($siswa->foto_url)
                 <img
-                    src="{{ asset('storage/' . $siswa->foto) }}"
+                    src="{{ $siswa->foto_url }}"
                     alt="{{ $siswa->nama }}"
                     style="
                         width:150px;
@@ -93,14 +92,11 @@
                         border-radius:8px;
                         border:1px solid #ddd;
                     "
+                    onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='inline';"
                 >
-
+                <span style="display:none; color:#64748b;">Belum ada foto.</span>
             @else
-
-                <span>
-                    Belum ada foto.
-                </span>
-
+                <span style="color:#64748b;">Belum ada foto.</span>
             @endif
 
         </p>
@@ -141,12 +137,12 @@
 
         <div
             id="previewContainer"
-            style="display:none; margin-bottom:20px;"
+            style="display:none; margin-top:14px; margin-bottom:20px; padding:16px; background:#f8fafc; border:1.5px dashed #3b82f6; border-radius:10px;"
         >
-
-            <p>
-                <strong>Preview Foto Baru:</strong>
-            </p>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
+                <strong style="color:#1e293b; font-size:13.5px;">👁 Preview Foto Baru (Akan Disimpan)</strong>
+                <span style="background:#dcfce7; color:#15803d; font-size:12px; font-weight:700; padding:3px 10px; border-radius:20px; border:1px solid #bbf7d0;">✓ Siap Disimpan</span>
+            </div>
 
             <img
                 id="previewFoto"
@@ -157,10 +153,15 @@
                     height:200px;
                     object-fit:cover;
                     border-radius:8px;
-                    border:1px solid #ddd;
+                    border:1px solid #cbd5e1;
+                    display:block;
+                    margin-bottom:10px;
                 "
             >
 
+            <div style="padding:10px 14px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; font-size:12.5px; color:#1e40af;">
+                Foto baru ini akan disimpan dan menggantikan foto lama saat Anda menekan tombol <strong>Simpan Perubahan</strong> di bawah.
+            </div>
         </div>
 
 
