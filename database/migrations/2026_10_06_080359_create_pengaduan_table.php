@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('status', [
                 'baru',
                 'diproses',
-                'selesai'
+                'selesai',
             ])->default('baru');
             $table->text('tanggapan')->nullable();
             $table->timestamps();

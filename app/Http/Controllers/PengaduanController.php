@@ -30,6 +30,7 @@ class PengaduanController extends Controller
             'nama' => 'required|string|max:150',
             'email' => 'required|email|max:150',
             'no_hp' => 'nullable|string|max:30',
+            'kategori_keperluan' => 'required|string|max:100',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string|max:5000',
         ]);
@@ -38,6 +39,7 @@ class PengaduanController extends Controller
             'nama' => $validated['nama'],
             'email' => $validated['email'],
             'no_hp' => $validated['no_hp'] ?? null,
+            'kategori_keperluan' => $validated['kategori_keperluan'],
             'judul' => $validated['judul'],
             'isi' => $validated['isi'],
             'status' => 'baru',
@@ -54,11 +56,29 @@ class PengaduanController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $pengaduan = Pengaduan::latest()->get();
+        $status = $request->query('status');
+        $query = Pengaduan::latest();
 
-        return view('admin.pengaduan.index', compact('pengaduan'));
+        if (in_array($status, ['baru', 'diproses', 'selesai'])) {
+            $query->where('status', $status);
+        }
+
+        $pengaduan = $query->get();
+        $totalAduan = Pengaduan::count();
+        $totalBaru = Pengaduan::where('status', 'baru')->count();
+        $totalDiproses = Pengaduan::where('status', 'diproses')->count();
+        $totalSelesai = Pengaduan::where('status', 'selesai')->count();
+
+        return view('admin.pengaduan.index', compact(
+            'pengaduan',
+            'status',
+            'totalAduan',
+            'totalBaru',
+            'totalDiproses',
+            'totalSelesai'
+        ));
     }
 
     /*

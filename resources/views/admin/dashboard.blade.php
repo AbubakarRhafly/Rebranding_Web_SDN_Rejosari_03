@@ -69,14 +69,6 @@
     </a>
 </div>
 
-<div class="card">
-    <h3>Kegiatan & Lomba</h3>
-    <p>{{ $jumlahKegiatan }}</p>
-
-    <a href="{{ route('admin.kegiatan-lomba.index') }}">
-        Kelola Kegiatan & Lomba
-    </a>
-</div>
 
 <div class="card">
     <h3>Pengaduan</h3>

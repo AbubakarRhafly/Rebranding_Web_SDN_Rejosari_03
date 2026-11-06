@@ -1,0 +1,42 @@
+@php
+    $isAnnouncement = $jenis === 'pengumuman';
+    $gambarUrl = $isAnnouncement ? $item->foto_url : $item->thumbnail_url;
+    $tanggal = $isAnnouncement ? $item->tanggal_mulai : $item->tanggal_publish;
+    $label = $isAnnouncement ? 'Pengumuman' : ($item->kategori ?: 'Berita');
+    $urlDetail = $isAnnouncement ? route('pengumuman.show', $item->id) : route('berita.show', $item->slug);
+    $teks = trim(html_entity_decode(strip_tags(preg_replace('/<\s*(?:br\s*\/?|\/p|\/div|\/li)\s*>/i', "\n", $item->isi ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+@endphp
+<article class="info-card">
+    <a href="{{ $urlDetail }}" class="info-card__image-link" tabindex="-1" aria-hidden="true">
+        <div class="info-card__image">
+            @if ($gambarUrl)
+                <img src="{{ $gambarUrl }}" alt="{{ $item->judul }}" loading="lazy" width="600" height="400"
+                     onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                <div class="info-placeholder" role="img" aria-label="Gambar belum tersedia" style="display:none;">
+                    <svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="7" y="9" width="34" height="30" rx="5"/><circle cx="17" cy="19" r="3"/><path d="m8 33 10-9 7 6 6-5 10 9"/></svg>
+                    <span>SDN Rejosari 03</span>
+                </div>
+            @else
+                <div class="info-placeholder" role="img" aria-label="Gambar belum tersedia">
+                    <svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="7" y="9" width="34" height="30" rx="5"/><circle cx="17" cy="19" r="3"/><path d="m8 33 10-9 7 6 6-5 10 9"/></svg>
+                    <span>SDN Rejosari 03</span>
+                </div>
+            @endif
+        </div>
+    </a>
+    <div class="info-card__body">
+        <div class="info-card__meta">
+            <span class="info-tag">{{ $label }}</span>
+            @if ($tanggal)
+                <time datetime="{{ $tanggal->format('Y-m-d') }}">{{ $tanggal->locale('id')->translatedFormat('d M Y') }}</time>
+            @endif
+        </div>
+        <h3><a href="{{ $urlDetail }}" class="info-card__title-link">{{ $item->judul }}</a></h3>
+        <p class="info-excerpt">{{ \Illuminate\Support\Str::limit($teks, 130) }}</p>
+        <div class="info-card__footer">
+            <a href="{{ $urlDetail }}" class="info-card__action-btn">
+                {{ $isAnnouncement ? 'Lihat pengumuman' : 'Baca selengkapnya' }} <span aria-hidden="true">→</span>
+            </a>
+        </div>
+    </div>
+</article>

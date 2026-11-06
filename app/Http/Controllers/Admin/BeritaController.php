@@ -64,7 +64,7 @@ class BeritaController extends Controller
 
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:berita,slug,' . $id,
+            'slug' => 'nullable|string|max:255|unique:berita,slug,'.$id,
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'isi' => 'required|string',
             'kategori' => 'nullable|string|max:100',
@@ -76,8 +76,13 @@ class BeritaController extends Controller
         $validated['slug'] = $validated['slug']
             ?: Str::slug($validated['judul']);
 
-        if ($request->hasFile('thumbnail')) {
-            if ($berita->thumbnail) {
+        if ($request->boolean('hapus_thumbnail')) {
+            if ($berita->thumbnail && Storage::disk('public')->exists($berita->thumbnail)) {
+                Storage::disk('public')->delete($berita->thumbnail);
+            }
+            $validated['thumbnail'] = null;
+        } elseif ($request->hasFile('thumbnail')) {
+            if ($berita->thumbnail && Storage::disk('public')->exists($berita->thumbnail)) {
                 Storage::disk('public')->delete($berita->thumbnail);
             }
 

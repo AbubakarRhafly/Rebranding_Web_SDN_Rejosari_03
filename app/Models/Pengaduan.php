@@ -12,6 +12,7 @@ class Pengaduan extends Model
         'nama',
         'email',
         'no_hp',
+        'kategori_keperluan',
         'judul',
         'isi',
         'status',
